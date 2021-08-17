@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from "react";
 import Axios from "axios";
-import {Form, Input, Icon, Select, Radio, Alert, Button, Tooltip} from "antd";
+import {Form, Input, Icon, Select, Radio, Button, Tooltip} from "antd";
 import styles from "./advanced-settings.module.scss";
 import {AdvancedSettingsTooltips} from "../../config/tooltips.config";
 import {AdvancedSettingsMessages} from "../../config/messages.config";
@@ -8,6 +8,7 @@ import StepsConfig from "../../config/steps.config";
 import "./advanced-settings.scss";
 import AdvancedTargetCollections from "./advanced-target-collections";
 import {CurationContext} from "../../util/curation-context";
+import HCAlert from "../common/hc-alert/hc-alert";
 
 const {TextArea} = Input;
 const {Option} = Select;
@@ -145,7 +146,7 @@ const AdvancedSettings: React.FC<Props> = (props) => {
       props.setOpenStepSettings(false);
       props.resetTabs();
     }
-    if (isSubmit && curationOptions.activeStep.hasWarnings.length === 0 && stepType === ("merging")  && validateMerge) {
+    if (isSubmit && curationOptions.activeStep.hasWarnings.length === 0 && stepType === ("merging") && validateMerge) {
       setValidateMergeCalled(false);
       props.setOpenStepSettings(false);
       props.resetTabs();
@@ -327,7 +328,7 @@ const AdvancedSettings: React.FC<Props> = (props) => {
     return payload;
   };
 
-  const handleSubmit = async (event: { preventDefault: () => void; }) => {
+  const handleSubmit = async (event: {preventDefault: () => void;}) => {
     if (event) event.preventDefault();
 
     // Parent handles saving of all tabs
@@ -354,7 +355,7 @@ const AdvancedSettings: React.FC<Props> = (props) => {
       let permissionArray = targetPermissions.split(",");
       for (let i = 0; i < permissionArray.length; i += 2) {
         let role = permissionArray[i];
-        if (i + 1 >= permissionArray.length || (!role ||!role.trim())) {
+        if (i + 1 >= permissionArray.length || (!role || !role.trim())) {
           setPermissionValidationError(AdvancedSettingsMessages.targetPermissions.incorrectFormat);
           props.setIsValid(false);
           return false;
@@ -569,21 +570,22 @@ const AdvancedSettings: React.FC<Props> = (props) => {
           if (warning["message"].includes("target entity type")) {
             description = "Please remove target entity type from target collections";
           } else if (warning["message"].includes("source collection")) {
-            description= "Please remove source collection from target collections";
+            description = "Please remove source collection from target collections";
           } else if (warning["message"].includes("temporal collection")) {
-            description= "Please remove temporal collection from target collections";
+            description = "Please remove temporal collection from target collections";
           } else {
             description = "";
           }
           return (
-            <Alert
+            <HCAlert
               className={styles.alert}
-              type="warning"
+              variant="warning"
               showIcon
               key={warning["level"] + index}
-              message={<div className={styles.alertMessage}>{warning["message"]}</div>}
-              description={description}
-            />
+              heading={warning["message"]}
+            >
+              {description}
+            </HCAlert>
           );
         })
       ) : null : null}
@@ -593,8 +595,8 @@ const AdvancedSettings: React.FC<Props> = (props) => {
           labelAlign="left"
           className={styles.formItem}>
           <div >{stepDefinitionName}</div>
-        </Form.Item> : null }
-        { usesSourceDatabase ? <Form.Item
+        </Form.Item> : null}
+        {usesSourceDatabase ? <Form.Item
           label={<span>Source Database</span>}
           labelAlign="left"
           className={styles.formItem}
@@ -613,7 +615,7 @@ const AdvancedSettings: React.FC<Props> = (props) => {
           </Select>
           <div className={styles.selectTooltip}>
             <Tooltip title={tooltips.sourceDatabase} placement={"right"}>
-              <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
+              <Icon type="question-circle" className={styles.questionCircle} theme="filled" />
             </Tooltip>
           </div>
         </Form.Item> : null
@@ -636,7 +638,7 @@ const AdvancedSettings: React.FC<Props> = (props) => {
           </Select>
           <div className={styles.selectTooltip}>
             <Tooltip title={tooltips.targetDatabase} placement={"right"}>
-              <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
+              <Icon type="question-circle" className={styles.questionCircle} theme="filled" />
             </Tooltip>
           </div>
         </Form.Item>
@@ -654,7 +656,7 @@ const AdvancedSettings: React.FC<Props> = (props) => {
             defaultTargetCollections={defaultTargetCollections}
             targetCollections={targetCollections}
             setTargetCollections={handleAdvancedTargetCollections}
-            canWrite={canReadWrite}/>
+            canWrite={canReadWrite} />
         </Form.Item> :
           <Form.Item
             label={<span>Target Collections</span>}
@@ -679,7 +681,7 @@ const AdvancedSettings: React.FC<Props> = (props) => {
             </Select>
             <div className={styles.inputTooltip}>
               <Tooltip title={tooltips.additionalCollections} placement={"right"}>
-                <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
+                <Icon type="question-circle" className={styles.questionCircle} theme="filled" />
               </Tooltip>
             </div>
           </Form.Item>}
@@ -706,14 +708,14 @@ const AdvancedSettings: React.FC<Props> = (props) => {
           />
           <div className={styles.inputTooltip}>
             <Tooltip title={tooltips.targetPermissions} placement={"right"}>
-              <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
+              <Icon type="question-circle" className={styles.questionCircle} theme="filled" />
             </Tooltip>
           </div>
           <div className={styles.validationError} data-testid="validationError">
             {permissionValidationError}
           </div>
         </Form.Item>
-        { usesTargetFormat ? <Form.Item
+        {usesTargetFormat ? <Form.Item
           label={<span>Target Format</span>}
           labelAlign="left"
           className={styles.formItem}
@@ -732,10 +734,10 @@ const AdvancedSettings: React.FC<Props> = (props) => {
           </Select>
           <div className={styles.inputTooltip}>
             <Tooltip title={tooltips.targetFormat} placement={"right"}>
-              <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
+              <Icon type="question-circle" className={styles.questionCircle} theme="filled" />
             </Tooltip>
           </div>
-        </Form.Item> : null }
+        </Form.Item> : null}
         <Form.Item
           label={<span>Provenance Granularity</span>}
           labelAlign="left"
@@ -755,11 +757,11 @@ const AdvancedSettings: React.FC<Props> = (props) => {
           </Select>
           <div className={styles.selectTooltip}>
             <Tooltip title={tooltips.provGranularity} placement={"right"}>
-              <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
+              <Icon type="question-circle" className={styles.questionCircle} theme="filled" />
             </Tooltip>
           </div>
         </Form.Item>
-        {   stepType === "mapping" ? <Form.Item
+        {stepType === "mapping" ? <Form.Item
           label={<span>Entity Validation</span>}
           labelAlign="left"
           className={styles.formItem}
@@ -778,7 +780,7 @@ const AdvancedSettings: React.FC<Props> = (props) => {
           </Select>
           <div className={styles.selectTooltip}>
             <Tooltip title={tooltips.validateEntity} placement={"right"}>
-              <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
+              <Icon type="question-circle" className={styles.questionCircle} theme="filled" />
             </Tooltip>
           </div>
         </Form.Item> : ""}
@@ -810,14 +812,14 @@ const AdvancedSettings: React.FC<Props> = (props) => {
           labelAlign="left"
           className={styles.formItem}
         >
-          <Radio.Group  onChange={handleChange} name="attachSourceDocument" value={attachSourceDocument}>
+          <Radio.Group onChange={handleChange} name="attachSourceDocument" value={attachSourceDocument}>
             <Radio value={true} data-testid="attachmentTrue">Yes</Radio>
             <Radio value={false} data-testid="attachmentFalse">No</Radio>
           </Radio.Group>
           <Tooltip title={tooltips.attachSourceDocument} placement={"right"}>
             <Icon type="question-circle" className={styles.centerCircle} theme="filled" />
           </Tooltip>
-        </Form.Item>: ""}
+        </Form.Item> : ""}
         <Form.Item
           label={<span>Batch Size</span>}
           labelAlign="left"
@@ -834,11 +836,11 @@ const AdvancedSettings: React.FC<Props> = (props) => {
           />
           <div className={styles.inputTooltip}>
             <Tooltip title={tooltips.batchSize} placement={"right"}>
-              <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
+              <Icon type="question-circle" className={styles.questionCircle} theme="filled" />
             </Tooltip>
           </div>
         </Form.Item>
-        { usesHeaders ?
+        {usesHeaders ?
           <>
             <Form.Item
               label={<span>Header Content</span>}
@@ -857,10 +859,10 @@ const AdvancedSettings: React.FC<Props> = (props) => {
                 aria-label="headers-textarea"
                 style={!headersValid ? {border: "solid 1px #C00"} : {}}
               />
-              { !headersValid ? <div className={styles.invalid}>{invalidJSONMessage}</div> : null }
+              {!headersValid ? <div className={styles.invalid}>{invalidJSONMessage}</div> : null}
               <div className={styles.textareaTooltip}>
                 <Tooltip title={tooltips.headers} placement={"right"}>
-                  <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
+                  <Icon type="question-circle" className={styles.questionCircle} theme="filled" />
                 </Tooltip>
               </div>
             </Form.Item>
@@ -881,10 +883,10 @@ const AdvancedSettings: React.FC<Props> = (props) => {
           className={styles.formItem}
           colon={false}
         />
-        { interceptorsExpanded ? <div className={styles.expandContainer}>
+        {interceptorsExpanded ? <div className={styles.expandContainer}>
           <div className={styles.textareaExpandTooltip}>
             <Tooltip title={tooltips.interceptors} placement={"right"}>
-              <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
+              <Icon type="question-circle" className={styles.questionCircle} theme="filled" />
             </Tooltip>
           </div>
           <TextArea
@@ -899,7 +901,7 @@ const AdvancedSettings: React.FC<Props> = (props) => {
             aria-label="interceptors-textarea"
             style={!interceptorsValid ? {border: "solid 1px #C00"} : {}}
           />
-          { !interceptorsValid ? <div className={styles.invalidExpand}>{invalidJSONMessage}</div> : null }
+          {!interceptorsValid ? <div className={styles.invalidExpand}>{invalidJSONMessage}</div> : null}
         </div> : ""}
         <Form.Item
           label={<span>
@@ -916,10 +918,10 @@ const AdvancedSettings: React.FC<Props> = (props) => {
           className={styles.formItem}
           colon={false}
         />
-        { customHookExpanded ? <div className={styles.expandContainer}>
+        {customHookExpanded ? <div className={styles.expandContainer}>
           <div className={styles.textareaExpandTooltip}>
             <Tooltip title={tooltips.customHook} placement={"right"}>
-              <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
+              <Icon type="question-circle" className={styles.questionCircle} theme="filled" />
             </Tooltip>
           </div>
           <TextArea
@@ -934,9 +936,9 @@ const AdvancedSettings: React.FC<Props> = (props) => {
             aria-label="customHook-textarea"
             style={!customHookValid ? {border: "solid 1px #C00"} : {}}
           />
-          { !customHookValid ? <div className={styles.invalidExpand}>{invalidJSONMessage}</div> : null }
+          {!customHookValid ? <div className={styles.invalidExpand}>{invalidJSONMessage}</div> : null}
         </div> : ""}
-        { stepType === "custom" || isCustomIngestion ?
+        {stepType === "custom" || isCustomIngestion ?
           <Form.Item
             label={<span>Additional Settings</span>}
             labelAlign="left"
@@ -953,10 +955,10 @@ const AdvancedSettings: React.FC<Props> = (props) => {
               aria-label="options-textarea"
               onBlur={handleBlur}
             />
-            { !additionalSettingsValid ? <div className={styles.invalid}>{invalidJSONMessage}</div> : null }
+            {!additionalSettingsValid ? <div className={styles.invalid}>{invalidJSONMessage}</div> : null}
             <div className={styles.selectTooltip}>
               <Tooltip title={props.tooltipsData.additionalSettings} placement={"right"}>
-                <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
+                <Icon type="question-circle" className={styles.questionCircle} theme="filled" />
               </Tooltip>
             </div>
           </Form.Item> : null
@@ -964,11 +966,11 @@ const AdvancedSettings: React.FC<Props> = (props) => {
         <Form.Item className={styles.submitButtonsForm}>
           <div className={styles.submitButtons}>
             <Button data-testid={`${props.stepData.name}-cancel-settings`} onClick={() => onCancel()}>Cancel</Button>&nbsp;&nbsp;
-            {!canReadWrite || !isFormValid()? <Tooltip title={tooltips.missingPermission} placement={"bottomRight"}>
+            {!canReadWrite || !isFormValid() ? <Tooltip title={tooltips.missingPermission} placement={"bottomRight"}>
               <span className={styles.disabledCursor}>
                 <Button id={"saveButton"} className={styles.saveButton} data-testid={`${props.stepData.name}-save-settings`} type="primary" htmlType="submit" onClick={handleSubmit} disabled={true}>Save</Button>
               </span>
-            </Tooltip>:<Button id={"saveButton"} data-testid={`${props.stepData.name}-save-settings`} type="primary" htmlType="submit" onClick={handleSubmit} disabled={false} onFocus={sendPayload}>Save</Button>}
+            </Tooltip> : <Button id={"saveButton"} data-testid={`${props.stepData.name}-save-settings`} type="primary" htmlType="submit" onClick={handleSubmit} disabled={false} onFocus={sendPayload}>Save</Button>}
           </div>
         </Form.Item>
       </Form>

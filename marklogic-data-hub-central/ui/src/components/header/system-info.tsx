@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import styles from "./system-info.module.scss";
-import {Card, Col, Row, Modal, Alert, Spin, Button, Tooltip} from "antd";
+import {Card, Col, Row, Modal, Spin, Button, Tooltip} from "antd";
 import axios from "axios";
 import {UserContext} from "../../util/user-context";
 import {AuthoritiesContext} from "../../util/authorities";
@@ -9,6 +9,7 @@ import {SecurityTooltips} from "../../config/tooltips.config";
 import {SystemInfoMessages} from "../../config/messages.config";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faExclamationTriangle, faCopy} from "@fortawesome/free-solid-svg-icons";
+import HCAlert from "../common/hc-alert/hc-alert";
 
 
 const SystemInfo = (props) => {
@@ -138,7 +139,7 @@ const SystemInfo = (props) => {
     >
       <div className={styles.systemContainer}>
         <div data-testid="alertTrue" className={styles.alertPosition} style={message.show ? {display: "block"} : {display: "none"}}>
-          <Alert message={<span><b>Clear All User Data </b>completed successfully</span>} type="success" showIcon />
+          <HCAlert variant="success" showIcon>{<span><b>Clear All User Data </b>completed successfully</span>}</HCAlert>
         </div>
         <div className={styles.serviceName}>{serviceName}<Tooltip title="Copy to clipboard" placement={"bottom"}><FontAwesomeIcon icon={faCopy} data-testid="copyServiceName" className={styles.copyIcon} onClick={() => copyToClipBoard(serviceName)}/></Tooltip></div>
         <div className={styles.version}>

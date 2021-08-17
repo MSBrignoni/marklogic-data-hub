@@ -1,6 +1,6 @@
 
 import React, {useState, useEffect, CSSProperties, useRef, useContext} from "react";
-import {Card, Table, Icon, Input, Alert, Dropdown, Menu, Checkbox, Spin, Button, Tooltip} from "antd";
+import {Card, Table, Icon, Input, Dropdown, Menu, Checkbox, Spin, Button, Tooltip} from "antd";
 import styles from "./mapping-step-detail.module.scss";
 import "./mapping-step-detail.scss";
 import EntityMapTable from "../entity-map-table/entity-map-table";
@@ -27,6 +27,7 @@ import CustomPageHeader from "../../page-header/page-header";
 import {clearSessionStorageOnRefresh, getViewSettings, setViewSettings} from "../../../../util/user-context";
 import {paginationMapping, mappingColors} from "../../../../config/mapping.config";
 import useDynamicRefs from "use-dynamic-refs";
+import HCAlert from "../../../common/hc-alert/hc-alert";
 
 const DEFAULT_MAPPING_STEP: MappingStep = {
   name: "",
@@ -1033,8 +1034,8 @@ const MappingStepDetail: React.FC = () => {
     let mesg = `All changes are saved on ${convertDateFromISO(new Date())}`;
     let errorMesg = `An error occured while saving the changes.`;
 
-    let msg = <span data-testid="successMessage" id="successMessage"><Alert type="success" message={mesg} banner style={saveMessageCSS} /></span>;
-    let errorMsg = <span  id="errorMessage"><Alert type="error" message={errorMesg} banner style={saveMessageCSS} /></span>;
+    let msg = <span data-testid="successMessage" id="successMessage"><HCAlert variant="success" style={saveMessageCSS} showIcon>{mesg}</HCAlert></span>;
+    let errorMsg = <span id="errorMessage"><HCAlert variant="danger" style={saveMessageCSS} showIcon>{errorMesg}</HCAlert></span>;
     setTimeout(() => {
       setErrorInSaving("");
     }, 2000);

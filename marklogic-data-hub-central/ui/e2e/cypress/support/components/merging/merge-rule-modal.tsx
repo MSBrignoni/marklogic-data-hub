@@ -57,12 +57,8 @@ class MergeRuleModal {
     cy.waitUntil(() => cy.findByTestId(`strategyNameOptions-${strategyName}`).should("be.visible")).click({force: true});
   }
 
-  alertMessage() {
-    return cy.get(".merge-rule-dialog_alertMessage__28dTa");
-  }
-
-  alertDescription() {
-    return cy.get(".ant-alert-description");
+  alertContent() {
+    return cy.get(`[id="hc-alert-component-content"]`);
   }
 
   ruleMaxValuesInput(value: string) {
