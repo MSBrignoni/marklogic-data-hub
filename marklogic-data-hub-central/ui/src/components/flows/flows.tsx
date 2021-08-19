@@ -1,5 +1,5 @@
 import React, {useState, CSSProperties, useEffect, useContext, createRef} from "react";
-import {Collapse, Icon, Card, Modal, Menu, Dropdown} from "antd";
+import {Collapse, Icon, Modal, Menu, Dropdown} from "antd";
 import {DownOutlined} from "@ant-design/icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCog} from "@fortawesome/free-solid-svg-icons";
@@ -17,6 +17,7 @@ import {Link, useLocation} from "react-router-dom";
 import axios from "axios";
 import {getViewSettings, setViewSettings, UserContext} from "../../util/user-context";
 import Button from 'react-bootstrap/Button';
+import MLCard from "../shared/ml-card/ml-card";
 
 
 enum ReorderFlowOrderDirection {
@@ -863,10 +864,9 @@ const Flows: React.FC<Props> = (props) => {
         let stepDefinitionTypeTitle = StepDefinitionTypeTitles[stepDefinitionType];
         return (
           <div key={viewStepId} id="flowSettings">
-            <Card
+            <MLCard
               className={styles.cardStyle}
               title={StepDefToTitle(step.stepDefinitionType)}
-              size="small"
               actions={[
                 <div className={styles.reorder}>
                   {index !== 0 && props.canWriteFlow &&
@@ -994,7 +994,7 @@ const Flows: React.FC<Props> = (props) => {
                 <div><MLSpin data-testid="spinner" /></div>
                 <div className={styles.runningLabel}>Running...</div>
               </div>
-            </Card>
+            </MLCard>
           </div>
         );
       });

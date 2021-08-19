@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from "react";
-import {Modal, Row, Col, Card, Menu, Dropdown, Collapse, Icon} from "antd";
+import {Modal, Row, Col, Menu, Dropdown, Collapse, Icon} from "antd";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlusSquare} from "@fortawesome/free-solid-svg-icons";
 import {faTrashAlt} from "@fortawesome/free-regular-svg-icons";
@@ -9,6 +9,7 @@ import styles from "./matching-step-detail.module.scss";
 import "./matching-step-detail.scss";
 import {MatchingStepTooltips} from "../../../../config/tooltips.config";
 import CustomPageHeader from "../../page-header/page-header";
+import MLCard from "../../../shared/ml-card/ml-card";
 
 import RulesetSingleModal from "../ruleset-single-modal/ruleset-single-modal";
 import RulesetMultipleModal from "../ruleset-multiple-modal/ruleset-multiple-modal";
@@ -630,7 +631,7 @@ const MatchingStepDetail: React.FC = () => {
               {matchingActivity?.thresholdActions?.map((combinationsObject, i, combArr) => {
                 return <Col span={8} key={`${combinationsObject["name"]}-${i}`}>
                   <div className={styles.matchCombinationsColsContainer}>
-                    <Card bordered={false} className={styles.matchCombinationsCardStyle}>
+                    <MLCard className={styles.matchCombinationsCardStyle}>
                       <div className={combArr.length > 1 ? styles.colsWithoutDivider : styles.colsWithSingleMatch}>
                         <div className={styles.combinationlabel} aria-label={`combinationLabel-${combinationsObject.name}`}>Minimum combinations for <strong>{combinationsObject.name}</strong> threshold:</div>
 
@@ -645,7 +646,7 @@ const MatchingStepDetail: React.FC = () => {
 
                         })}
                       </div>
-                    </Card>
+                    </MLCard>
                   </div>
                 </Col>;
               })

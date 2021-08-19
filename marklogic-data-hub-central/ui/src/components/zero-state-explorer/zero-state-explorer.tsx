@@ -1,5 +1,5 @@
 import React, {useState, useContext} from "react";
-import {Row, Col, Card, Select, Input, Divider} from "antd";
+import {Row, Col, Select, Input, Divider} from "antd";
 import styles from "./zero-state-explorer.module.scss";
 import {SearchContext} from "../../util/search-context";
 import graphic from "./explore_visual_big.png";
@@ -8,6 +8,7 @@ import {MLButton, MLRadio, MLTooltip} from "@marklogic/design-system";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faStream, faTable, faThLarge} from "@fortawesome/free-solid-svg-icons";
 import tiles from "../../config/tiles.config";
+import MLCard from "../shared/ml-card/ml-card";
 
 const ZeroStateExplorer = (props) => {
   const {
@@ -150,7 +151,7 @@ const ZeroStateExplorer = (props) => {
         <Row>
           <Col span={24}>
             <div className={styles.box}>
-              <Card className={styles.largeCard} bordered={false}>
+              <MLCard className={styles.largeCard}>
                 <Row>
                   <Col span={24}>
                     <div className={styles.database}>
@@ -238,7 +239,7 @@ const ZeroStateExplorer = (props) => {
                     </div>
                   </Col>
                 </Row>
-              </Card>
+              </MLCard>
             </div>
           </Col>
         </Row>
@@ -250,7 +251,7 @@ const ZeroStateExplorer = (props) => {
         {props.isSavedQueryUser && <Row >
           <Col span={24}>
             <div className={styles.box}>
-              <Card className={styles.smallCard} bordered={false}>
+              <MLCard className={styles.smallCard}>
                 <Row>
                   <Col span={24} >
                     <div id="query-selector" className={styles.query} >
@@ -267,7 +268,7 @@ const ZeroStateExplorer = (props) => {
                     </div>
                   </Col>
                 </Row>
-              </Card>
+              </MLCard>
             </div>
           </Col>
         </Row>}

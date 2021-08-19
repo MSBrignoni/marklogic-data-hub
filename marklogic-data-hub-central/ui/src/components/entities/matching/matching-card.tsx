@@ -1,11 +1,12 @@
 import React, {useState, useContext} from "react";
 import {Link, useHistory} from "react-router-dom";
-import {Card, Icon, Row, Col, Divider, Select, Modal} from "antd";
+import {Icon, Row, Col, Divider, Select, Modal} from "antd";
 import {MLTooltip} from "@marklogic/design-system";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPencilAlt, faCog} from "@fortawesome/free-solid-svg-icons";
 import {faTrashAlt} from "@fortawesome/free-regular-svg-icons";
 import styles from "./matching-card.module.scss";
+import {Card} from "react-bootstrap";
 
 import ConfirmationModal from "../../confirmation-modal/confirmation-modal";
 
@@ -371,8 +372,7 @@ const MatchingCard: React.FC<Props> = (props) => {
       <Row gutter={16} type="flex">
         {props.canWriteMatchMerge ? (
           <Col>
-            <Card
-              size="small"
+            <Card body
               className={styles.addNewCard}>
               <div><Icon type="plus-circle" className={styles.plusIcon} theme="filled" onClick={OpenAddNew}/></div>
               <br/>
@@ -381,7 +381,6 @@ const MatchingCard: React.FC<Props> = (props) => {
           </Col>
         ) : <Col>
           <MLTooltip title={"Curate: "+SecurityTooltips.missingPermission} placement="bottom" overlayStyle={tooltipOverlayStyle}><Card
-            size="small"
             className={styles.addNewCardDisabled}>
             <div aria-label="add-new-card-disabled"><Icon type="plus-circle" className={styles.plusIconDisabled} theme="filled"/></div>
             <br/>
@@ -397,10 +396,9 @@ const MatchingCard: React.FC<Props> = (props) => {
                 onMouseLeave={(e) => handleMouseLeave()}
               >
                 <Card
-                  actions={renderCardActions(step, index)}
                   className={styles.cardStyle}
-                  size="small"
                 >
+                  <Card.Body>
                   <div className={styles.formatFileContainer}>
                     <span aria-label={`${step.name}-step-label`} className={styles.mapNameStyle}>{getInitialChars(step.name, 27, "...")}</span>
                   </div>
@@ -448,6 +446,10 @@ const MatchingCard: React.FC<Props> = (props) => {
                       ) : null}
                     </div>
                   </div>
+                  </Card.Body>
+                  <Card.Footer>
+                    {renderCardActions(step, index)}
+                  </Card.Footer>
                 </Card>
               </div>
             </Col>

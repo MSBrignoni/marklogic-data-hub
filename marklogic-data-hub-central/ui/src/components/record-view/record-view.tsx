@@ -1,6 +1,6 @@
 import React, {CSSProperties, useContext} from "react";
 import styles from "./record-view.module.scss";
-import {Card, Icon, Row, Col} from "antd";
+import {Icon, Row, Col} from "antd";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faExternalLinkAlt} from "@fortawesome/free-solid-svg-icons";
 import {AuthoritiesContext} from "../../util/authorities";
@@ -13,6 +13,7 @@ import {CardViewDateConverter} from "../../util/date-conversion";
 import {Link} from "react-router-dom";
 import {SearchContext} from "../../util/search-context";
 import {getRecord} from "../../api/record";
+import MLCard from "../shared/ml-card/ml-card";
 
 const RecordCardView = (props) => {
   const authorityService = useContext(AuthoritiesContext);  // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -163,9 +164,8 @@ const RecordCardView = (props) => {
         {props.data && props.data.length > 0 ? props.data.map((elem, index) => (
           <Col key={index}>
             <div >
-              <Card
+              <MLCard
                 className={styles.cardStyle}
-                size="small"
               >
                 <div className={styles.cardMetadataContainer}>
                   <span className={styles.uriContainer} data-testid={elem.uri + "-URI"}>URI: <span className={styles.uri}>
@@ -202,7 +202,7 @@ const RecordCardView = (props) => {
                 <div className={styles.snippetContainer} data-testid={elem.uri + "-snippet"} >
                   {displaySnippet(elem)}
                 </div>
-              </Card>
+              </MLCard>
               <span className={styles.downloadIcon}>
                 <MLTooltip title={displayFileSize(elem)} placement="bottom" >
                   <span><Icon type="download" onClick={() => download(elem.uri)} data-testid={elem.uri + "-download-icon"} /></span>

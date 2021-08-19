@@ -1,6 +1,6 @@
 
 import React, {useState, useEffect, CSSProperties, useRef, useContext} from "react";
-import {Card, Table, Icon, Input, Alert, Dropdown, Menu} from "antd";
+import {Table, Icon, Input, Alert, Dropdown, Menu} from "antd";
 import styles from "./mapping-step-detail.module.scss";
 import "./mapping-step-detail.scss";
 import EntityMapTable from "../entity-map-table/entity-map-table";
@@ -28,6 +28,7 @@ import CustomPageHeader from "../../page-header/page-header";
 import {clearSessionStorageOnRefresh, getViewSettings, setViewSettings} from "../../../../util/user-context";
 import {paginationMapping, mappingColors} from "../../../../config/mapping.config";
 import useDynamicRefs from "use-dynamic-refs";
+import {Card} from "react-bootstrap";
 
 const DEFAULT_MAPPING_STEP: MappingStep = {
   name: "",
@@ -1421,7 +1422,7 @@ const MappingStepDetail: React.FC = () => {
                 emptyData ?
                   <div id="noData">
                     <br/><br/>
-                    <Card className={styles.emptyCard} size="small">
+                    <Card className={styles.emptyCard} body>
                       <div className={styles.emptyText}>
                         <p>Unable to find source records using the specified collection or query.</p>
                         <p>Load some data that mapping can use as reference and/or edit the step

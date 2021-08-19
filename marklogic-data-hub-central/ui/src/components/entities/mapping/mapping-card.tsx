@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from "react";
 import styles from "./mapping-card.module.scss";
-import {Card, Icon, Divider, Row, Col, Modal, Select} from "antd";
+import {Icon, Divider, Row, Col, Modal, Select} from "antd";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrashAlt} from "@fortawesome/free-regular-svg-icons";
 import {convertDateFromISO, getInitialChars, extractCollectionFromSrcQuery} from "../../../util/conversionFunctions";
@@ -12,6 +12,7 @@ import Steps from "../../steps/steps";
 import {CurationContext} from "../../../util/curation-context";
 import {StepType} from "../../../types/curation-types";
 import {getViewSettings, setViewSettings} from "../../../util/user-context";
+import MLCard from "../../shared/ml-card/ml-card";
 
 const {Option} = Select;
 
@@ -365,21 +366,19 @@ const MappingCard: React.FC<Props> = (props) => {
     <div className={styles.loadContainer}>
       <Row gutter={16} type="flex" >
         {props.canReadWrite ? <Col>
-          <Card
-            size="small"
+          <MLCard
             className={styles.addNewCard}>
             <div><Icon type="plus-circle" className={styles.plusIcon} theme="filled" onClick={OpenAddNew}/></div>
             <br />
-            <p className={styles.addNewContent}>Add New</p>
-          </Card>
+            <p className={styles.addNewContent}>Add a New</p>
+          </MLCard>
         </Col> : <Col>
-          <MLTooltip title={"Curate: "+SecurityTooltips.missingPermission} overlayStyle={tooltipOverlayStyle}><Card
-            size="small"
-            className={styles.addNewCardDisabled}>
+          <MLTooltip title={"Curate: "+SecurityTooltips.missingPermission} overlayStyle={tooltipOverlayStyle}><MLCard
+            body className={styles.addNewCardDisabled}>
             <div aria-label="add-new-card-disabled"><Icon type="plus-circle" className={styles.plusIconDisabled} theme="filled"/></div>
             <br/>
             <p className={styles.addNewContent}>Add New</p>
-          </Card></MLTooltip>
+          </MLCard></MLTooltip>
         </Col>}
         {
           props.data && props.data.length > 0 ?
@@ -390,16 +389,15 @@ const MappingCard: React.FC<Props> = (props) => {
                   onMouseOver={(e) => handleMouseOver(e, elem.name)}
                   onMouseLeave={(e) => handleMouseLeave()}
                 >
-                  <Card
+                  <MLCard
                     actions={[
-                      <MLTooltip title={"Step Details"} placement="bottom"><i className={styles.stepDetails}><FontAwesomeIcon icon={faPencilAlt} onClick={() => openMapStepDetails(elem.name, index)} data-testid={`${elem.name}-stepDetails`}/></i></MLTooltip>,
-                      <MLTooltip title={"Step Settings"} placement="bottom"><i className={styles.editIcon} role="edit-mapping button" key ="last"><FontAwesomeIcon icon={faCog} data-testid={elem.name+"-edit"} onClick={() => OpenStepSettings(index)}/></i></MLTooltip>,
-                      props.canReadWrite ? <MLTooltip title={"Run"} placement="bottom"><i aria-label="icon: run"><Icon type="play-circle" theme="filled" className={styles.runIcon} data-testid={elem.name+"-run"} onClick={() => handleStepRun(elem.name)}/></i></MLTooltip> : <MLTooltip title={"Run: " + SecurityTooltips.missingPermission} placement="bottom" overlayStyle={{maxWidth: "200px"}}><i role="disabled-run-mapping button" data-testid={elem.name+"-disabled-run"}><Icon type="play-circle" theme="filled" onClick={(event) => event.preventDefault()} className={styles.disabledIcon}/></i></MLTooltip>,
-                      props.canReadWrite ? <MLTooltip title={"Delete"} placement="bottom"><i key ="last" role="delete-mapping button" data-testid={elem.name+"-delete"} onClick={() => handleCardDelete(elem.name)}><FontAwesomeIcon icon={faTrashAlt} className={styles.deleteIcon} size="lg"/></i></MLTooltip> : <MLTooltip title={"Delete: " + SecurityTooltips.missingPermission} placement="bottom" overlayStyle={{maxWidth: "200px"}}><i role="disabled-delete-mapping button" data-testid={elem.name+"-disabled-delete"} onClick={(event) => event.preventDefault()}><FontAwesomeIcon icon={faTrashAlt} className={styles.disabledIcon} size="lg"/></i></MLTooltip>,
+                      <MLTooltip title={"Step Details"} placement="bottom"><i className={styles.stepDetails}><FontAwesomeIcon icon={faPencilAlt} onClick={() => openMapStepDetails(elem.name, index)} data-testid={`${elem.name}-stepDetails`} /></i></MLTooltip>,
+                      <MLTooltip title={"Step Settings"} placement="bottom"><i className={styles.editIcon} role="edit-mapping button" key="last"><FontAwesomeIcon icon={faCog} data-testid={elem.name + "-edit"} onClick={() => OpenStepSettings(index)} /></i></MLTooltip>,
+                      props.canReadWrite ? <MLTooltip title={"Run"} placement="bottom"><i aria-label="icon: run"><Icon type="play-circle" theme="filled" className={styles.runIcon} data-testid={elem.name + "-run"} onClick={() => handleStepRun(elem.name)} /></i></MLTooltip> : <MLTooltip title={"Run: " + SecurityTooltips.missingPermission} placement="bottom" overlayStyle={{maxWidth: "200px"}}><i role="disabled-run-mapping button" data-testid={elem.name + "-disabled-run"}><Icon type="play-circle" theme="filled" onClick={(event) => event.preventDefault()} className={styles.disabledIcon} /></i></MLTooltip>,
+                      props.canReadWrite ? <MLTooltip title={"Delete"} placement="bottom"><i key="last" role="delete-mapping button" data-testid={elem.name + "-delete"} onClick={() => handleCardDelete(elem.name)}><FontAwesomeIcon icon={faTrashAlt} className={styles.deleteIcon} size="lg" /></i></MLTooltip> : <MLTooltip title={"Delete: " + SecurityTooltips.missingPermission} placement="bottom" overlayStyle={{maxWidth: "200px"}}><i role="disabled-delete-mapping button" data-testid={elem.name + "-disabled-delete"} onClick={(event) => event.preventDefault()}><FontAwesomeIcon icon={faTrashAlt} className={styles.disabledIcon} size="lg" /></i></MLTooltip>,
                     ]}
                     className={styles.cardStyle}
-                    size="small"
-                  >
+                  > 
                     <div className={styles.formatFileContainer}>
                       <span aria-label={`${elem.name}-step-label`} className={styles.mapNameStyle}>{getInitialChars(elem.name, 27, "...")}</span>
 
@@ -459,7 +457,7 @@ const MappingCard: React.FC<Props> = (props) => {
                         }
                       </div>
                     </div>
-                  </Card>
+                  </MLCard>
                 </div>
               </Col>
             ))

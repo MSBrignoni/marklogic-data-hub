@@ -1,0 +1,35 @@
+.cardStyle {
+    width: 300px;
+    margin-top: 9px;
+    text-align: left;
+    align-content: left;
+    padding-bottom: 0px;
+    border: 1px solid #d7d6d6;
+    margin-bottom: 10px;
+}
+
+
+.footer {
+  background: #fafafa;
+  border-top: 1px solid #e8e8e8 !important;
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.footerContent {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    color: #777;
+    border-right: 1px solid #e8e8e8;
+    text-align: center;
+	}
+
+  li:last-child { border-right: none; }
+}

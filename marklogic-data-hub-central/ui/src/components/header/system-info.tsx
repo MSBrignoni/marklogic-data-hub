@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import styles from "./system-info.module.scss";
-import {Card, Col, Row, Modal, Alert} from "antd";
+import {Col, Row, Modal, Alert} from "antd";
 import axios from "axios";
 import {UserContext} from "../../util/user-context";
 import {AuthoritiesContext} from "../../util/authorities";
@@ -10,6 +10,7 @@ import {SecurityTooltips} from "../../config/tooltips.config";
 import {SystemInfoMessages} from "../../config/messages.config";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faExclamationTriangle, faCopy} from "@fortawesome/free-solid-svg-icons";
+import MLCard from "../shared/ml-card/ml-card";
 
 
 const SystemInfo = (props) => {
@@ -155,7 +156,7 @@ const SystemInfo = (props) => {
             <Row gutter={16} type="flex" >
 
               { !authorityService.canDownloadProjectFiles() ? <Col>
-                <Card size="small" className={styles.download} >
+                <MLCard className={styles.download} >
                   <div className={styles.title}>Download Hub Central Files</div>
                   <p>{SystemInfoMessages.downloadHubCentralFiles}</p>
                   <MLTooltip title={SecurityTooltips.missingPermission} placement="bottom">
@@ -167,10 +168,10 @@ const SystemInfo = (props) => {
                       >Download</MLButton>
                     </div>
                   </MLTooltip>
-                </Card>
+                </MLCard>
               </Col>:
                 <Col>
-                  <Card size="small" className={styles.download} >
+                  <MLCard className={styles.download} >
                     <div className={styles.title}>Download Hub Central Files</div>
                     <p>{SystemInfoMessages.downloadHubCentralFiles}</p>
                     <div className={styles.buttonContainer}>
@@ -181,12 +182,12 @@ const SystemInfo = (props) => {
                         onClick={downloadHubCentralFiles}
                       >Download</MLButton>
                     </div>
-                  </Card>
+                  </MLCard>
                 </Col>
               }
 
               { !authorityService.canDownloadProjectFiles() ? <Col>
-                <Card size="small" className={styles.download} >
+                <MLCard className={styles.download}>
                   <div className={styles.title}>Download Project Files</div>
                   <p>{SystemInfoMessages.downloadProjectFiles}</p>
                   <MLTooltip title={SecurityTooltips.missingPermission} placement="bottom">
@@ -198,10 +199,10 @@ const SystemInfo = (props) => {
                       >Download</MLButton>
                     </div>
                   </MLTooltip>
-                </Card>
+                </MLCard>
               </Col>:
                 <Col>
-                  <Card size="small" className={styles.download} >
+                  <MLCard className={styles.download} >
                     <div className={styles.title}>Download Project Files</div>
                     <p>{SystemInfoMessages.downloadProjectFiles}</p>
                     <div className={styles.buttonContainer}>
@@ -212,12 +213,12 @@ const SystemInfo = (props) => {
                         onClick={downloadProjectFiles}
                       >Download</MLButton>
                     </div>
-                  </Card>
+                  </MLCard>
                 </Col>
               }
 
               { !authorityService.canClearUserData() ? <Col>
-                <Card size="small" className={styles.clearAll}>
+                <MLCard className={styles.clearAll}>
                   {isLoading === true ? <div className={styles.spinRunning}>
                     <MLSpin size={"large"} />
                   </div>: ""}
@@ -232,10 +233,10 @@ const SystemInfo = (props) => {
                       >Clear</MLButton>
                     </div>
                   </MLTooltip>
-                </Card>
+                </MLCard>
               </Col>:
                 <Col>
-                  <Card size="small" className={styles.clearAll}>
+                  <MLCard className={styles.clearAll}>
                     {isLoading === true ? <div className={styles.spinRunning}>
                       <MLSpin size={"large"} />
                     </div>: ""}
@@ -249,7 +250,7 @@ const SystemInfo = (props) => {
                         onClick={handleClearData}
                       >Clear</MLButton>
                     </div>
-                  </Card>
+                  </MLCard>
                 </Col>
               }
 
