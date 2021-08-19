@@ -7,11 +7,10 @@ import styles from "./Detail.module.scss";
 import TableView from "../components/table-view/table-view";
 import DetailHeader from "../components/detail-header/detail-header";
 import AsyncLoader from "../components/async-loader/async-loader";
-import {Layout, Menu, PageHeader} from "antd";
+import {Layout, Menu, PageHeader, Tooltip} from "antd";
 import {xmlParser, xmlDecoder, xmlFormatter, jsonFormatter} from "../util/record-parser";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faThList, faCode} from "@fortawesome/free-solid-svg-icons";
-import {MLTooltip} from "@marklogic/design-system";
 import {getUserPreferences, updateUserPreferences} from "../services/user-preferences";
 import DetailPageNonEntity from "../components/detail-page-non-entity/detail-page-non-entity";
 import {SearchContext} from "../util/search-context";
@@ -86,34 +85,30 @@ const Detail: React.FC<Props> = ({history, location}) => {
         }
 
         if (componentIsMounted.current) {
-          setIsEntityInstanceDocument(result.data.isHubEntityInstance);
-          const content = result.data.recordType;
-          // TODO handle exception if document type is json -> XML
-          if (content === "json") {
+          if (result.data.entityInstanceProperties !== null) {
+            setIsEntityInstanceDocument(true);
+            setIsEntityInstance(true);
+            setEntityInstance(result.data.entityInstanceProperties);
+          } else {
+            setIsEntityInstanceDocument(false);
+            setIsEntityInstance(false);
+          }
+
+          const recordType = result.data.recordType;
+          if (recordType === "json") {
             setContentType("json");
             setData(result.data.data);
-            if (result.data.isHubEntityInstance) {
-              initializeEntityInstance(result.data.data);
-            }
-            setEntityInstanceFlag(result.data.data);
-          } else if (content === "xml") {
+          } else if (recordType === "xml") {
             setContentType("xml");
-            let decodedXml = xmlDecoder(result.data.data);
-            let document = xmlParser(decodedXml);
+            const decodedXml = xmlDecoder(result.data.data);
+            const document = xmlParser(decodedXml);
             setData(document);
             setXml(result.data.data);
-            setEntityInstanceFlag(document);
-            if (result.data.isHubEntityInstance) {
-              initializeEntityInstance(document);
-            }
-          } else if (content === "text") {
+          } else if (recordType === "text") {
             setContentType("text");
             setData(result.data.data);
-            setEntityInstanceFlag(result.data.data);
-            if (result.data.isHubEntityInstance) {
-              initializeEntityInstance(document);
-            }
           }
+
           //Setting the data for sources metadata table
           setSources(result.data.sources);
           setSourcesTableData(generateSourcesData(result.data.sources));
@@ -155,26 +150,6 @@ const Detail: React.FC<Props> = ({history, location}) => {
       handleUserPreferences();
     }
   }, [entityInstanceDocument === true || entityInstanceDocument === false]);
-
-  const initializeEntityInstance = (document) => {
-    let title = "";
-    if (document.envelope) {
-      let instance = document.envelope.instance;
-      if (instance.hasOwnProperty("info")) {
-        title = instance.info.hasOwnProperty("title") && instance.info.title;
-      }
-      setEntityInstance(instance[title]);
-    } else {
-      let esEnvelope = document["es:envelope"];
-      if (esEnvelope) {
-        let esInstance = esEnvelope["es:instance"];
-        if (esInstance.hasOwnProperty("es:info")) {
-          title = esInstance["es:info"].hasOwnProperty("es:title") && esInstance["es:info"]["es:title"];
-        }
-        setEntityInstance(esInstance[title]);
-      }
-    }
-  };
 
   const generateSourcesData = (sourceData) => {
     let parsedData: any[] = [];
@@ -292,16 +267,6 @@ const Detail: React.FC<Props> = ({history, location}) => {
     }
   };
 
-  const setEntityInstanceFlag = (content) => {
-    let instance = {};
-    let info = {};
-    if (content.envelope && content.envelope.instance) {
-      instance = content.envelope.instance;
-      info = instance["info"] ? instance["info"] : info;
-    }
-    setIsEntityInstance(info ? true : (Object.keys(instance).length > 1 ? false : true));
-  };
-
   const handleClick = (event) => {
     setSelected(event.key);
 
@@ -353,20 +318,20 @@ const Detail: React.FC<Props> = ({history, location}) => {
               <div id="menu" className={styles.menu}>
                 <Menu id="subMenu" onClick={(event) => handleClick(event)} mode="horizontal" selectedKeys={[selected]}>
                   <Menu.Item key="instance" id="instance" data-cy="instance-view">
-                    <MLTooltip title={"Show the processed data"}>
+                    <Tooltip title={"Show the processed data"}>
                       <FontAwesomeIcon icon={faThList} size="lg" />
                       <span className={styles.subMenu}>Instance</span>
-                    </MLTooltip>
+                    </Tooltip>
                   </Menu.Item>
                   <Menu.Item key="full" id="full" data-cy="source-view">
-                    <MLTooltip title={"Show the complete " + contentType.toUpperCase()} >
+                    <Tooltip title={"Show the complete " + contentType.toUpperCase()} >
                       {contentType.toUpperCase() === "XML" ?
                         <FontAwesomeIcon icon={faCode} size="lg" />
                         :
                         <span className={styles.jsonIcon}></span>
                       }
                       <span className={styles.subMenu}>{contentType.toUpperCase()}</span>
-                    </MLTooltip>
+                    </Tooltip>
                   </Menu.Item>
                 </Menu>
               </div>

@@ -1,7 +1,6 @@
 import React, {useState, useContext} from "react";
 import {Link, useHistory} from "react-router-dom";
-import {Icon, Row, Col, Select, Divider, Modal} from "antd";
-import {MLTooltip} from "@marklogic/design-system";
+import {Icon, Row, Col, Select, Divider, Modal, Tooltip} from "antd";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPencilAlt, faCog} from "@fortawesome/free-solid-svg-icons";
 import {faTrashAlt} from "@fortawesome/free-regular-svg-icons";
@@ -327,41 +326,41 @@ const MergingCard: React.FC<Props> = (props) => {
 
   const renderCardActions = (step, index) => {
     return [
-      <MLTooltip title={"Step Details"} placement="bottom">
+      <Tooltip title={"Step Details"} placement="bottom">
         <i className={styles.stepDetails}>
           <FontAwesomeIcon icon={faPencilAlt} data-testid={`${step.name}-stepDetails`} onClick={() => openStepDetails(step)}/>
         </i>
-      </MLTooltip>,
-      <MLTooltip title={"Step Settings"} placement="bottom">
+      </Tooltip>,
+      <Tooltip title={"Step Settings"} placement="bottom">
         <i className={styles.editIcon} key ="last" role="edit-merging button">
           <FontAwesomeIcon icon={faCog} data-testid={step.name+"-edit"} onClick={() => OpenStepSettings(index)}></FontAwesomeIcon>
         </i>
-      </MLTooltip>,
+      </Tooltip>,
 
       props.canWriteMatchMerge ? (
-        <MLTooltip title={"Run"} placement="bottom">
+        <Tooltip title={"Run"} placement="bottom">
           <i aria-label="icon: run">
             <Icon type="play-circle" theme="filled" className={styles.runIcon} data-testid={step.name+"-run"} onClick={() => handleStepRun(step.name)}/></i>
-        </MLTooltip>
+        </Tooltip>
       ) : (
-        <MLTooltip title={"Run: " + SecurityTooltips.missingPermission} placement="bottom" overlayStyle={{maxWidth: "200px"}}>
+        <Tooltip title={"Run: " + SecurityTooltips.missingPermission} placement="bottom" overlayStyle={{maxWidth: "200px"}}>
           <i role="disabled-run-merging button" data-testid={step.name+"-disabled-run"}>
             <Icon type="play-circle" theme="filled" onClick={(event) => event.preventDefault()} className={styles.disabledRunIcon}/></i>
-        </MLTooltip>
+        </Tooltip>
       ),
 
       props.canWriteMatchMerge ? (
-        <MLTooltip title={"Delete"} placement="bottom">
+        <Tooltip title={"Delete"} placement="bottom">
           <i className={styles.deleteIcon}key ="last" role="delete-merging button" data-testid={step.name+"-delete"} onClick={() => deleteStepClicked(step.name)}>
             <FontAwesomeIcon icon={faTrashAlt} className={styles.deleteIcon} size="lg"/>
           </i>
-        </MLTooltip>
+        </Tooltip>
       ) : (
-        <MLTooltip title={"Delete: " + SecurityTooltips.missingPermission} placement="bottom" overlayStyle={{maxWidth: "200px"}}>
+        <Tooltip title={"Delete: " + SecurityTooltips.missingPermission} placement="bottom" overlayStyle={{maxWidth: "200px"}}>
           <i role="disabled-delete-merging button" data-testid={step.name+"-disabled-delete"} onClick={(event) => event.preventDefault()}>
             <FontAwesomeIcon icon={faTrashAlt} className={styles.disabledDeleteIcon} size="lg"/>
           </i>
-        </MLTooltip>
+        </Tooltip>
       ),
     ];
   };
@@ -379,12 +378,13 @@ const MergingCard: React.FC<Props> = (props) => {
             </MLCard>
           </Col>
         ) : <Col>
-          <MLTooltip title={"Curate: "+SecurityTooltips.missingPermission} placement="bottom" overlayStyle={tooltipOverlayStyle}><MLCard
-            body className={styles.addNewCardDisabled}>
+          <Tooltip title={"Curate: "+SecurityTooltips.missingPermission} placement="bottom" overlayStyle={tooltipOverlayStyle}><MLCard
+            size="small"
+            className={styles.addNewCardDisabled}>
             <div aria-label="add-new-card-disabled"><Icon type="plus-circle" className={styles.plusIconDisabled} theme="filled"/></div>
             <br/>
             <p className={styles.addNewContent}>Add New</p>
-          </MLCard></MLTooltip>
+          </MLCard></Tooltip>
         </Col>}
         {props.mergingStepsArray && props.mergingStepsArray.length > 0 ? (
           props.mergingStepsArray.map((step, index) => (
@@ -398,54 +398,54 @@ const MergingCard: React.FC<Props> = (props) => {
                   actions={renderCardActions(step, index)}
                   className={styles.cardStyle}
                 >
-                    <div className={styles.formatFileContainer}>
-                      <span aria-label={`${step.name}-step-label`} className={styles.mapNameStyle}>{getInitialChars(step.name, 27, "...")}</span>
+                  <div className={styles.formatFileContainer}>
+                    <span aria-label={`${step.name}-step-label`} className={styles.mapNameStyle}>{getInitialChars(step.name, 27, "...")}</span>
+                  </div>
+                  <br />
+                  {step.selectedSource === "collection" ? (
+                    <div className={styles.sourceQuery}>Collection: {extractCollectionFromSrcQuery(step.sourceQuery)}</div>
+                  ): (
+                    <div className={styles.sourceQuery}>Source Query: {getInitialChars(step.sourceQuery, 32, "...")}</div>
+                  )}
+                  <br /><br />
+                  <p className={styles.lastUpdatedStyle}>Last Updated: {convertDateFromISO(step.lastUpdated)}</p>
+                  <div className={styles.cardLinks} style={{display: showLinks === step.name ? "block" : "none"}}>
+                    {props.canWriteMatchMerge ? (
+                      <Link
+                        id="tiles-run-add"
+                        to={{
+                          pathname: "/tiles/run/add",
+                          state: {
+                            stepToAdd: step.name,
+                            stepDefinitionType: "merging"
+                          }}}
+                      >
+                        <div className={styles.cardLink} data-testid={`${step.name}-toNewFlow`}> Add step to a new flow</div>
+                      </Link>
+                    ) : <div className={styles.cardDisabledLink} data-testid={`${step.name}-disabledToNewFlow`}> Add step to a new flow</div>
+                    }
+                    <div className={styles.cardNonLink} data-testid={`${step.name}-toExistingFlow`}>
+                    Add step to an existing flow
+                      {selectVisible ? (
+                        <Tooltip title={"Curate: "+SecurityTooltips.missingPermission} placement={"bottom"} visible={tooltipVisible && !props.canWriteMatchMerge}><div className={styles.cardLinkSelect}>
+                          <Select
+                            style={{width: "100%"}}
+                            value={selected[step.name] ? selected[step.name] : undefined}
+                            onChange={(flowName) => handleSelect({flowName: flowName, mergingName: step.name})}
+                            placeholder="Select Flow"
+                            defaultActiveFirstOption={false}
+                            disabled={!props.canWriteMatchMerge}
+                            data-testid={`${step.name}-flowsList`}
+                          >
+                            {props.flows && props.flows.length > 0 ? props.flows.map((f, i) => (
+                              <Option aria-label={`${f.name}-option`} value={f.name} key={i}>{f.name}</Option>
+                            )) : null}
+                          </Select>
+                        </div></Tooltip>
+                      ): null}
                     </div>
-                    <br />
-                    {step.selectedSource === "collection" ? (
-                      <div className={styles.sourceQuery}>Collection: {extractCollectionFromSrcQuery(step.sourceQuery)}</div>
-                    ): (
-                      <div className={styles.sourceQuery}>Source Query: {getInitialChars(step.sourceQuery, 32, "...")}</div>
-                    )}
-                    <br /><br />
-                    <p className={styles.lastUpdatedStyle}>Last Updated: {convertDateFromISO(step.lastUpdated)}</p>
-                    <div className={styles.cardLinks} style={{display: showLinks === step.name ? "block" : "none"}}>
-                      {props.canWriteMatchMerge ? (
-                        <Link
-                          id="tiles-run-add"
-                          to={{
-                            pathname: "/tiles/run/add",
-                            state: {
-                              stepToAdd: step.name,
-                              stepDefinitionType: "merging"
-                            }}}
-                        >
-                          <div className={styles.cardLink} data-testid={`${step.name}-toNewFlow`}> Add step to a new flow</div>
-                        </Link>
-                      ) : <div className={styles.cardDisabledLink} data-testid={`${step.name}-disabledToNewFlow`}> Add step to a new flow</div>
-                      }
-                      <div className={styles.cardNonLink} data-testid={`${step.name}-toExistingFlow`}>
-                      Add step to an existing flow
-                        {selectVisible ? (
-                          <MLTooltip title={"Curate: "+SecurityTooltips.missingPermission} placement={"bottom"} visible={tooltipVisible && !props.canWriteMatchMerge}><div className={styles.cardLinkSelect}>
-                            <Select
-                              style={{width: "100%"}}
-                              value={selected[step.name] ? selected[step.name] : undefined}
-                              onChange={(flowName) => handleSelect({flowName: flowName, mergingName: step.name})}
-                              placeholder="Select Flow"
-                              defaultActiveFirstOption={false}
-                              disabled={!props.canWriteMatchMerge}
-                              data-testid={`${step.name}-flowsList`}
-                            >
-                              {props.flows && props.flows.length > 0 ? props.flows.map((f, i) => (
-                                <Option aria-label={`${f.name}-option`} value={f.name} key={i}>{f.name}</Option>
-                              )) : null}
-                            </Select>
-                          </div></MLTooltip>
-                        ): null}
-                      </div>
-                    </div>
-                </MLCard>
+                  </div>
+                </Card>
               </div>
             </Col>
           ))
