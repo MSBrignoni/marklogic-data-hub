@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useLayoutEffect, useContext} from "react";
+import React, {useState, useEffect, useContext, useLayoutEffect} from "react";
 import Graph from "react-graph-vis";
 import "./graph-vis.scss";
 import {ModelingContext} from "../../../../util/modeling-context";
@@ -83,9 +83,9 @@ const GraphVis: React.FC<Props> = (props) => {
   const graphType = "shape";
 
   // const [nodePositions, setNodePositions] = useState({});
+  const {modelingOptions, setSelectedEntity} = useContext(ModelingContext);
   const [physicsEnabled, setPhysicsEnabled] = useState(true);
   const [graphData, setGraphData] = useState({nodes: [], edges: []});
-  const {modelingOptions} = useContext(ModelingContext);
   let testingMode = true; // Should be used further to handle testing only in non-production environment
   const [openRelationshipModal, setOpenRelationshipModal] = useState(false);
   const [selectedRelationship, setSelectedRelationship] = useState<any>({});
@@ -114,6 +114,18 @@ const GraphVis: React.FC<Props> = (props) => {
     }
   }, [network, props.isEntitySelected]);
 
+  // React to node selection from outside (e.g. new node created)
+  useEffect(() => {
+    if (network && modelingOptions.selectedEntity) {
+      // Ensure entity exists
+      if (props.entityTypes.some(e => e.entityName === modelingOptions.selectedEntity)) {
+        network.selectNodes([modelingOptions.selectedEntity]);
+      } else {
+        // Entity type not found, unset in context
+        setSelectedEntity(undefined);
+      }
+    }
+  }, [network, modelingOptions.selectedEntity]);
 
   useLayoutEffect(() => {
     if (testingMode && network) {
@@ -212,6 +224,14 @@ const GraphVis: React.FC<Props> = (props) => {
 
   const onChosen = (values, id, selected, hovering) => {
     values.color = "#7FADE3";
+
+    //change one to many image
+    if (values.arrowStrikethrough === false) {
+      values.toArrowSrc = graphConfig.customEdgeSVG.oneToManyHover;
+    } else {
+    //change one to one image
+      values.toArrowSrc = graphConfig.customEdgeSVG.oneToOneHover;
+    }
   };
 
   const getEdges = () => {
@@ -220,6 +240,7 @@ const GraphVis: React.FC<Props> = (props) => {
       let properties: any = Object.keys(e.model.definitions[e.entityName].properties);
       properties.forEach((p, i) => {
         let pObj = e.model.definitions[e.entityName].properties[p];
+        //for one to one edges
         if (pObj.relatedEntityType) {
           let parts = pObj.relatedEntityType.split("/");
           edges.push({
@@ -229,7 +250,18 @@ const GraphVis: React.FC<Props> = (props) => {
             label: p,
             id: p + "-" + pObj.joinPropertyName + "-edge",
             title: "Edit Relationship",
-            arrows: "to",
+            arrows: {
+              to: {
+                enabled: true,
+                src: graphConfig.customEdgeSVG.oneToOne,
+                type: "image"
+              }
+            },
+            endPointOffset: {
+              from: -500,
+              to: -500
+            },
+            arrowStrikethrough: true,
             color: "#666",
             font: {
               align: "top",
@@ -240,6 +272,7 @@ const GraphVis: React.FC<Props> = (props) => {
               node: false
             }
           });
+        //for one to many edges
         } else if (pObj.items?.relatedEntityType) {
           let parts = pObj.items.relatedEntityType.split("/");
           edges.push({
@@ -249,7 +282,14 @@ const GraphVis: React.FC<Props> = (props) => {
             label: p,
             id: p + "-" + pObj.items.joinPropertyName + "-edge",
             title: "Edit Relationship",
-            arrows: "to",
+            arrowStrikethrough: false,
+            arrows: {
+              to: {
+                enabled: true,
+                src: graphConfig.customEdgeSVG.oneToMany,
+                type: "image"
+              }
+            },
             color: "#666",
             font: {align: "top"},
             chosen: {
@@ -275,7 +315,8 @@ const GraphVis: React.FC<Props> = (props) => {
       barnesHut: {
         springLength: 160,
         avoidOverlap: 0.4
-      }
+      },
+      stabilization: false
     },
     interaction: {
       navigationButtons: true,
@@ -347,6 +388,11 @@ const GraphVis: React.FC<Props> = (props) => {
       event.event.target.style.cursor = "";
     },
     doubleClick: (event) => {
+    },
+    stabilized: (event) => {
+      if (network && modelingOptions.selectedEntity) {
+        network.selectNodes([modelingOptions.selectedEntity]);
+      }
     }
   };
 
