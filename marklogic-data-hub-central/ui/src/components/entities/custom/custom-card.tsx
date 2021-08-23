@@ -1,13 +1,14 @@
-import {faCog} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {Col, Modal, Row, Select, Tooltip} from "antd";
 import React, {useState} from "react";
-import {Link, useHistory} from "react-router-dom";
-import {CustomStepTooltips, SecurityTooltips} from "../../../config/tooltips.config";
-import {convertDateFromISO, extractCollectionFromSrcQuery, getInitialChars} from "../../../util/conversionFunctions";
-import MLCard from "../../shared/ml-card/ml-card";
-import Steps from "../../steps/steps";
 import styles from "./custom-card.module.scss";
+import {Card, Row, Col, Modal, Select, Tooltip} from "antd";
+import {convertDateFromISO, getInitialChars, extractCollectionFromSrcQuery} from "../../../util/conversionFunctions";
+import {CustomStepTooltips} from "../../../config/tooltips.config";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import Steps from "../../steps/steps";
+import {faCog} from "@fortawesome/free-solid-svg-icons";
+import {Link, useHistory} from "react-router-dom";
+import {SecurityTooltips} from "../../../config/tooltips.config";
+import MLCard from "../../shared/ml-card/ml-card";
 
 const {Option} = Select;
 

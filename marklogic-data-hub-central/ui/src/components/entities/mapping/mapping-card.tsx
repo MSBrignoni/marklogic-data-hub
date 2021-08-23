@@ -1,17 +1,17 @@
-import {faTrashAlt} from "@fortawesome/free-regular-svg-icons";
-import {faCog, faPencilAlt} from "@fortawesome/free-solid-svg-icons";
+import React, {useState, useEffect, useContext} from "react";
+import styles from "./mapping-card.module.scss";
+import {Card, Icon, Divider, Row, Col, Modal, Select, Tooltip} from "antd";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {Col, Divider, Icon, Modal, Row, Select, Tooltip} from "antd";
-import React, {useContext, useEffect, useState} from "react";
-import {Link, useHistory} from "react-router-dom";
+import {faTrashAlt} from "@fortawesome/free-regular-svg-icons";
+import {convertDateFromISO, getInitialChars, extractCollectionFromSrcQuery} from "../../../util/conversionFunctions";
 import {AdvMapTooltips, SecurityTooltips} from "../../../config/tooltips.config";
-import {StepType} from "../../../types/curation-types";
-import {convertDateFromISO, extractCollectionFromSrcQuery, getInitialChars} from "../../../util/conversionFunctions";
+import {Link, useHistory} from "react-router-dom";
+import {faPencilAlt, faCog} from "@fortawesome/free-solid-svg-icons";
+import Steps from "../../steps/steps";
 import {CurationContext} from "../../../util/curation-context";
+import {StepType} from "../../../types/curation-types";
 import {getViewSettings, setViewSettings} from "../../../util/user-context";
 import MLCard from "../../shared/ml-card/ml-card";
-import Steps from "../../steps/steps";
-import styles from "./mapping-card.module.scss";
 
 const {Option} = Select;
 

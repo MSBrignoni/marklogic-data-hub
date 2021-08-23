@@ -1,13 +1,13 @@
-import {faStream, faTable, faThLarge} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {Button, Col, Divider, Input, Radio, Row, Select, Tooltip} from "antd";
-import React, {useContext, useState} from "react";
-import {Card} from "react-bootstrap";
-import tiles from "../../config/tiles.config";
-import {QueryOptions} from "../../types/query-types";
+import React, {useState, useContext} from "react";
+import {Row, Col, Select, Input, Divider, Button, Radio, Tooltip} from "antd";
+import styles from "./zero-state-explorer.module.scss";
 import {SearchContext} from "../../util/search-context";
 import graphic from "./explore_visual_big.png";
-import styles from "./zero-state-explorer.module.scss";
+import {QueryOptions} from "../../types/query-types";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faStream, faTable, faThLarge} from "@fortawesome/free-solid-svg-icons";
+import tiles from "../../config/tiles.config";
+import {Card} from "react-bootstrap";
 
 const ZeroStateExplorer = (props) => {
   const {

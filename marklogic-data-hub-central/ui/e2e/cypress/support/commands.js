@@ -24,11 +24,10 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 //import { defaultUserPreferences as userPreference } from "../../../src/services/user-preferences"
-import loginPage from "../support/pages/login";
 import "@testing-library/cypress/add-commands";
 import "cypress-file-upload";
 import "cypress-wait-until";
-import "cypress-file-upload";
+import loginPage from "../support/pages/login";
 require("cypress-plugin-tab");
 
 //cy.fixture('users/developer.json').as('developer')
@@ -225,7 +224,7 @@ Cypress.Commands.add("deleteEntities", (...entityNames) => {
 Cypress.Commands.add("deleteRecordsInFinal", (...collections) => {
   collections.forEach(collection => {
     cy.exec(`curl -X DELETE --anyauth -u test-admin-for-data-hub-tests:password -H "Content-Type:application/json" \
-    "${protocol}://${Cypress.env("mlHost")}:8002/v1/search?database=data-hub-FINAL&collection=${collection}"`);
+    "${protocol}://${Cypress.env("mlHost")}:8001/v1/search?database=data-hub-FINAL&collection=${collection}"`);
     console.warn(`DELETE RECORDS IN ${collection} COLLECTION`);
   });
 });
@@ -245,13 +244,13 @@ function setTestUserRoles(roles) {
     expect(content.role).deep.equals(role);
   });
   cy.exec(`curl -X PUT --anyauth -u test-admin-for-data-hub-tests:password -H "Content-Type:application/json" \
-  -d @cypress/support/body.json ${protocol}://${Cypress.env("mlHost")}:8002/manage/v2/users/hc-test-user/properties`);
+  -d @cypress/support/body.json ${protocol}://${Cypress.env("mlHost")}:8001/manage/v2/users/hc-test-user/properties`);
   cy.wait(500);
 }
 
 function resetTestUser() {
   cy.exec(`curl -X PUT --anyauth -u test-admin-for-data-hub-tests:password -H "Content-Type:application/json" \
-  -d @cypress/support/resetUser.json ${protocol}://${Cypress.env("mlHost")}:8002/manage/v2/users/hc-test-user/properties`);
+  -d @cypress/support/resetUser.json ${protocol}://${Cypress.env("mlHost")}:8001/manage/v2/users/hc-test-user/properties`);
 }
 
 Cypress.on("uncaught:exception", (err, runnable) => {

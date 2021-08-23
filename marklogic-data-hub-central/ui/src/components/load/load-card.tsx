@@ -1,29 +1,30 @@
-import {faTrashAlt} from "@fortawesome/free-regular-svg-icons";
-import {faCog} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {Col, Divider, Icon, Modal, Row, Select, Tooltip} from "antd";
 import React, {CSSProperties, useState} from "react";
-import {Link, useHistory} from "react-router-dom";
+import styles from "./load-card.module.scss";
+import {useHistory} from "react-router-dom";
+import {Card, Icon, Row, Col, Divider, Modal, Select, Tooltip} from "antd";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCog} from "@fortawesome/free-solid-svg-icons";
+import {faTrashAlt} from "@fortawesome/free-regular-svg-icons";
 import sourceFormatOptions from "../../config/formats.config";
-import {AdvLoadTooltips, SecurityTooltips} from "../../config/tooltips.config";
 import {convertDateFromISO} from "../../util/conversionFunctions";
 import MLCard from "../shared/ml-card/ml-card";
 import Steps from "../steps/steps";
-import styles from "./load-card.module.scss";
+import {AdvLoadTooltips, SecurityTooltips} from "../../config/tooltips.config";
+import {Link} from "react-router-dom";
 
 const {Option} = Select;
 
 interface Props {
-  data: any;
-  flows: any;
-  deleteLoadArtifact: any;
-  createLoadArtifact: any;
-  updateLoadArtifact: any;
-  canReadOnly: any;
-  canReadWrite: any;
-  canWriteFlow: any;
-  addStepToFlow: any;
-  addStepToNew: any;
+    data: any;
+    flows: any;
+    deleteLoadArtifact: any;
+    createLoadArtifact: any;
+    updateLoadArtifact: any;
+    canReadOnly: any;
+    canReadWrite: any;
+    canWriteFlow: any;
+    addStepToFlow: any;
+    addStepToNew: any;
 }
 
 const LoadCard: React.FC<Props> = (props) => {
