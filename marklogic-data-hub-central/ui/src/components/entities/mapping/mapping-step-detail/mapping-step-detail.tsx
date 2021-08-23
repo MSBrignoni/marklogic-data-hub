@@ -27,7 +27,7 @@ import CustomPageHeader from "../../page-header/page-header";
 import {clearSessionStorageOnRefresh, getViewSettings, setViewSettings} from "../../../../util/user-context";
 import {paginationMapping, mappingColors} from "../../../../config/mapping.config";
 import useDynamicRefs from "use-dynamic-refs";
-import {Card} from "react-bootstrap";
+import MLCard from "../../../shared/ml-card/ml-card";
 
 const DEFAULT_MAPPING_STEP: MappingStep = {
   name: "",

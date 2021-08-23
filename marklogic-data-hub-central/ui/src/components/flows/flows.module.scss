@@ -60,6 +60,13 @@
     cursor: not-allowed;
   }
 
+  .cardFooter {
+    background:white;
+    border-top: 0px;
+    padding: 0px;
+    margin: 0px;
+  }
+
   .panelContent {
     overflow-x: auto;
     width: 100%;
@@ -67,6 +74,10 @@
     justify-content: flex-start;
 
     .actions {
+      display: inline-block;
+      float: right;
+      padding-right: 5px;
+      
       .run {
         position: relative;
         top: 1px;
@@ -175,6 +186,7 @@
     }
 
     .cardContent {
+      position: relative;
       border: solid 1px #ddd;
       padding: 10px;
       height: 54px;
@@ -198,9 +210,9 @@
       }
       .cardLinks {
         position: absolute;
-        bottom: 52.5px;
-        left: 13px;
-        right: 13px;
+        bottom: 0;
+        left: 0;
+        right: 0;
         z-index: 999;
         background-color: rgba(255, 255, 255, 0.6);
         .cardLink {
@@ -246,6 +258,7 @@
 .cardStyle {
   width: 300px;
   margin-right: 20px;
+  border-style: dashed;
 
   ul {
     border-top: 0px;

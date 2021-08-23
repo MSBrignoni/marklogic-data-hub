@@ -5,7 +5,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPencilAlt, faCog} from "@fortawesome/free-solid-svg-icons";
 import {faTrashAlt} from "@fortawesome/free-regular-svg-icons";
 import styles from "./matching-card.module.scss";
-import {Card} from "react-bootstrap";
+import MLCard from "../../shared/ml-card/ml-card";
 
 import ConfirmationModal from "../../confirmation-modal/confirmation-modal";
 
@@ -371,21 +371,20 @@ const MatchingCard: React.FC<Props> = (props) => {
       <Row gutter={16} type="flex">
         {props.canWriteMatchMerge ? (
           <Col>
-            <Card body
+            <MLCard
               className={styles.addNewCard}>
               <div><Icon type="plus-circle" className={styles.plusIcon} theme="filled" onClick={OpenAddNew}/></div>
               <br/>
               <p className={styles.addNewContent}>Add New</p>
-            </Card>
+            </MLCard>
           </Col>
         ) : <Col>
-          <MLTooltip title={"Curate: "+SecurityTooltips.missingPermission} placement="bottom" overlayStyle={tooltipOverlayStyle}><Card
-            size="small"
+          <Tooltip title={"Curate: "+SecurityTooltips.missingPermission} placement="bottom" overlayStyle={tooltipOverlayStyle}><MLCard
             className={styles.addNewCardDisabled}>
             <div aria-label="add-new-card-disabled"><Icon type="plus-circle" className={styles.plusIconDisabled} theme="filled"/></div>
             <br/>
             <p className={styles.addNewContent}>Add New</p>
-          </Card></Tooltip>
+          </MLCard></Tooltip>
         </Col>}
         {props.matchingStepsArray.length > 0 ? (
           props.matchingStepsArray.map((step, index) => (
@@ -395,10 +394,10 @@ const MatchingCard: React.FC<Props> = (props) => {
                 onMouseOver={(e) => handleMouseOver(e, step.name)}
                 onMouseLeave={(e) => handleMouseLeave()}
               >
-                <Card
+                <MLCard
                   className={styles.cardStyle}
+                  actions={renderCardActions(step, index)}
                 >
-                  <Card.Body>
                   <div className={styles.formatFileContainer}>
                     <span aria-label={`${step.name}-step-label`} className={styles.mapNameStyle}>{getInitialChars(step.name, 27, "...")}</span>
                   </div>
@@ -446,11 +445,7 @@ const MatchingCard: React.FC<Props> = (props) => {
                       ) : null}
                     </div>
                   </div>
-                  </Card.Body>
-                  <Card.Footer>
-                    {renderCardActions(step, index)}
-                  </Card.Footer>
-                </Card>
+                </MLCard>
               </div>
             </Col>
           ))

@@ -1,18 +1,18 @@
-import React, {CSSProperties, useContext} from "react";
-import styles from "./record-view.module.scss";
-import {Icon, Row, Col, Popover, Tooltip} from "antd";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FileOutlined} from "@ant-design/icons";
 import {faExternalLinkAlt} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {Col, Icon, Popover, Row, Tooltip} from "antd";
+import React, {CSSProperties, useContext} from "react";
+import ReactHtmlParser from "react-html-parser";
+import {Link} from "react-router-dom";
+import {getRecord} from "../../api/record";
+import sourceFormatOptions from "../../config/formats.config";
 import {AuthoritiesContext} from "../../util/authorities";
 import {formatCardUri} from "../../util/conversionFunctions";
-import sourceFormatOptions from "../../config/formats.config";
-import ReactHtmlParser from "react-html-parser";
-import {FileOutlined} from "@ant-design/icons";
 import {CardViewDateConverter} from "../../util/date-conversion";
-import {Link} from "react-router-dom";
 import {SearchContext} from "../../util/search-context";
-import {getRecord} from "../../api/record";
 import MLCard from "../shared/ml-card/ml-card";
+import styles from "./record-view.module.scss";
 
 const RecordCardView = (props) => {
   const authorityService = useContext(AuthoritiesContext);  // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -213,12 +213,12 @@ const RecordCardView = (props) => {
                 <div className={styles.snippetContainer} data-testid={elem.uri + "-snippet"} >
                   {displaySnippet(elem)}
                 </div>
+                <span className={styles.downloadIcon}>
+                  <Tooltip title={displayFileSize(elem)} placement="bottom" >
+                    <span><Icon type="download" onClick={() => download(elem.uri)} data-testid={elem.uri + "-download-icon"} /></span>
+                  </Tooltip>
+                </span>
               </MLCard>
-              <span className={styles.downloadIcon}>
-                <Tooltip title={displayFileSize(elem)} placement="bottom" >
-                  <span><Icon type="download" onClick={() => download(elem.uri)} data-testid={elem.uri + "-download-icon"} /></span>
-                </Tooltip>
-              </span>
             </div>
           </Col>)) : <span></span>}
       </Row>

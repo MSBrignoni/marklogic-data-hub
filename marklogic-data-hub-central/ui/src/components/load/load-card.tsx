@@ -1,16 +1,15 @@
-import React, {CSSProperties, useState} from "react";
-import styles from "./load-card.module.scss";
-import {useHistory} from "react-router-dom";
-import {Icon, Row, Col, Divider, Modal, Select, Tooltip} from "antd";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCog} from "@fortawesome/free-solid-svg-icons";
 import {faTrashAlt} from "@fortawesome/free-regular-svg-icons";
+import {faCog} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {Col, Divider, Icon, Modal, Row, Select, Tooltip} from "antd";
+import React, {CSSProperties, useState} from "react";
+import {Link, useHistory} from "react-router-dom";
 import sourceFormatOptions from "../../config/formats.config";
-import {convertDateFromISO} from "../../util/conversionFunctions";
-import Steps from "../steps/steps";
 import {AdvLoadTooltips, SecurityTooltips} from "../../config/tooltips.config";
-import {Link} from "react-router-dom";
+import {convertDateFromISO} from "../../util/conversionFunctions";
 import MLCard from "../shared/ml-card/ml-card";
+import Steps from "../steps/steps";
+import styles from "./load-card.module.scss";
 
 const {Option} = Select;
 
@@ -344,18 +343,17 @@ const LoadCard: React.FC<Props> = (props) => {
           <MLCard className={styles.addNewCard}>
             <div aria-label="add-new-card"><Icon type="plus-circle" className={styles.plusIcon} theme="filled" onClick={OpenAddNew} /></div>
             <br />
-            <p className={styles.addNewContent}>Add  a New</p>
+            <p className={styles.addNewContent}>Add New</p>
           </MLCard>
 
         </Col> : <Col>
-          <Tooltip title={"Load: "+SecurityTooltips.missingPermission} overlayStyle={tooltipOverlayStyle}><Card
-            size="small"
+          <Tooltip title={"Load: "+SecurityTooltips.missingPermission} overlayStyle={tooltipOverlayStyle}><MLCard
             className={styles.addNewCardDisabled}
             data-testid="disabledAddNewCard">
             <div aria-label="add-new-card-disabled"><Icon type="plus-circle" className={styles.plusIconDisabled} theme="filled"/></div>
             <br />
             <p className={styles.addNewContentDisabled}>Add New</p>
-          </Card></Tooltip>
+          </MLCard></Tooltip>
         </Col>}{ props.data && props.data.length > 0 ? props.data.map((elem, index) => (
           <Col key={index}>
             <div
@@ -370,7 +368,6 @@ const LoadCard: React.FC<Props> = (props) => {
                   props.canReadWrite ? <Tooltip title={"Run"} placement="bottom"><i aria-label="icon: run"><Icon type="play-circle" theme="filled" className={styles.runIcon} data-testid={elem.name+"-run"} onClick={() => handleStepRun(elem.name)}/></i></Tooltip> : <Tooltip title={"Run: " + SecurityTooltips.missingPermission} placement="bottom" overlayStyle={{maxWidth: "200px"}}><i role="disabled-run-load button" data-testid={elem.name+"-disabled-run"}><Icon type="play-circle" theme="filled" onClick={(event) => event.preventDefault()} className={styles.disabledIcon}/></i></Tooltip>,
                   props.canReadWrite ? <Tooltip title={"Delete"} placement="bottom"><i aria-label="icon: delete"><FontAwesomeIcon icon={faTrashAlt} className={styles.deleteIcon} size="lg"  data-testid={elem.name+"-delete"} onClick={() => handleCardDelete(elem.name)}/></i></Tooltip> : <Tooltip title={"Delete: " + SecurityTooltips.missingPermission} placement="bottom" overlayStyle={{maxWidth: "200px"}}><i data-testid={elem.name+"-disabled-delete"}><FontAwesomeIcon icon={faTrashAlt} onClick={(event) => event.preventDefault()} className={styles.disabledIcon} size="lg"/></i></Tooltip>,
                 ]}
-                className={styles.cardStyle}
               >
                 <div className={styles.formatContainer}>
                   <div className={styles.sourceFormat} style={sourceFormatStyle(elem.sourceFormat)} aria-label={`${elem.name}-sourceFormat`}>{sourceFormatOptions[elem.sourceFormat].label}</div>

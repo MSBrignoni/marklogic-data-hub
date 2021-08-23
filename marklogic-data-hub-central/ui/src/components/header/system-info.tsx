@@ -166,8 +166,8 @@ const SystemInfo = (props) => {
                         disabled
                       >Download</Button>
                     </div>
-                  </MLTooltip>
-                </Card>
+                  </Tooltip>
+                </MLCard>
               </Col>:
                 <Col>
                   <MLCard className={styles.download} >
@@ -197,8 +197,8 @@ const SystemInfo = (props) => {
                         disabled
                       >Download</Button>
                     </div>
-                  </MLTooltip>
-                </Card>
+                  </Tooltip>
+                </MLCard>
               </Col>:
                 <Col>
                   <MLCard className={styles.download} >
@@ -232,7 +232,7 @@ const SystemInfo = (props) => {
                       >Clear</Button>
                     </div>
                   </Tooltip>
-                </Card>
+                </MLCard>
               </Col>:
                 <Col>
                   <MLCard className={styles.clearAll}>

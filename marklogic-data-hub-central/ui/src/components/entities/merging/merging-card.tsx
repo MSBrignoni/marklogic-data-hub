@@ -379,7 +379,6 @@ const MergingCard: React.FC<Props> = (props) => {
           </Col>
         ) : <Col>
           <Tooltip title={"Curate: "+SecurityTooltips.missingPermission} placement="bottom" overlayStyle={tooltipOverlayStyle}><MLCard
-            size="small"
             className={styles.addNewCardDisabled}>
             <div aria-label="add-new-card-disabled"><Icon type="plus-circle" className={styles.plusIconDisabled} theme="filled"/></div>
             <br/>
@@ -445,7 +444,7 @@ const MergingCard: React.FC<Props> = (props) => {
                       ): null}
                     </div>
                   </div>
-                </Card>
+                </MLCard>
               </div>
             </Col>
           ))
