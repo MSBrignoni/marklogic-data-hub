@@ -1,21 +1,21 @@
-import React, {useState, useContext} from "react";
-import {Link, useHistory} from "react-router-dom";
-import {Icon, Row, Col, Divider, Select, Modal, Tooltip} from "antd";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPencilAlt, faCog} from "@fortawesome/free-solid-svg-icons";
 import {faTrashAlt} from "@fortawesome/free-regular-svg-icons";
-import styles from "./matching-card.module.scss";
-import MLCard from "../../shared/ml-card/ml-card";
-
-import ConfirmationModal from "../../confirmation-modal/confirmation-modal";
-
-import {CurationContext} from "../../../util/curation-context";
-import {convertDateFromISO, getInitialChars, extractCollectionFromSrcQuery} from "../../../util/conversionFunctions";
+import {faCog, faPencilAlt} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {Col, Divider, Icon, Modal, Row, Select, Tooltip} from "antd";
+import React, {useContext, useState} from "react";
+import {Link, useHistory} from "react-router-dom";
 import {AdvMapTooltips, SecurityTooltips} from "../../../config/tooltips.config";
 import {ConfirmationType} from "../../../types/common-types";
 import {MatchingStep, StepType} from "../../../types/curation-types";
-import Steps from "../../steps/steps";
+import {convertDateFromISO, extractCollectionFromSrcQuery, getInitialChars} from "../../../util/conversionFunctions";
+import {CurationContext} from "../../../util/curation-context";
 import {getViewSettings, setViewSettings} from "../../../util/user-context";
+import HCCard from "../../common/hc-card/hc-card";
+import ConfirmationModal from "../../confirmation-modal/confirmation-modal";
+import Steps from "../../steps/steps";
+import styles from "./matching-card.module.scss";
+
+
 
 interface Props {
   matchingStepsArray: MatchingStep[];
@@ -371,20 +371,20 @@ const MatchingCard: React.FC<Props> = (props) => {
       <Row gutter={16} type="flex">
         {props.canWriteMatchMerge ? (
           <Col>
-            <MLCard
+            <HCCard
               className={styles.addNewCard}>
               <div><Icon type="plus-circle" className={styles.plusIcon} theme="filled" onClick={OpenAddNew}/></div>
               <br/>
               <p className={styles.addNewContent}>Add New</p>
-            </MLCard>
+            </HCCard>
           </Col>
         ) : <Col>
-          <Tooltip title={"Curate: "+SecurityTooltips.missingPermission} placement="bottom" overlayStyle={tooltipOverlayStyle}><MLCard
+          <Tooltip title={"Curate: "+SecurityTooltips.missingPermission} placement="bottom" overlayStyle={tooltipOverlayStyle}><HCCard
             className={styles.addNewCardDisabled}>
             <div aria-label="add-new-card-disabled"><Icon type="plus-circle" className={styles.plusIconDisabled} theme="filled"/></div>
             <br/>
             <p className={styles.addNewContent}>Add New</p>
-          </MLCard></Tooltip>
+          </HCCard></Tooltip>
         </Col>}
         {props.matchingStepsArray.length > 0 ? (
           props.matchingStepsArray.map((step, index) => (
@@ -394,7 +394,7 @@ const MatchingCard: React.FC<Props> = (props) => {
                 onMouseOver={(e) => handleMouseOver(e, step.name)}
                 onMouseLeave={(e) => handleMouseLeave()}
               >
-                <MLCard
+                <HCCard
                   className={styles.cardStyle}
                   actions={renderCardActions(step, index)}
                 >
@@ -445,7 +445,7 @@ const MatchingCard: React.FC<Props> = (props) => {
                       ) : null}
                     </div>
                   </div>
-                </MLCard>
+                </HCCard>
               </div>
             </Col>
           ))

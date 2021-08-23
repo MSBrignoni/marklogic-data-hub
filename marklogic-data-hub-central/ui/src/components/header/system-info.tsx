@@ -1,15 +1,14 @@
-import React, {useContext, useEffect, useState} from "react";
-import styles from "./system-info.module.scss";
-import {Col, Row, Modal, Alert, Spin, Button, Tooltip} from "antd";
-import axios from "axios";
-import {UserContext} from "../../util/user-context";
-import {AuthoritiesContext} from "../../util/authorities";
-import Axios from "axios";
-import {SecurityTooltips} from "../../config/tooltips.config";
-import {SystemInfoMessages} from "../../config/messages.config";
+import {faCopy, faExclamationTriangle} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faExclamationTriangle, faCopy} from "@fortawesome/free-solid-svg-icons";
-import MLCard from "../shared/ml-card/ml-card";
+import {Alert, Button, Col, Modal, Row, Spin, Tooltip} from "antd";
+import {default as axios, default as Axios} from "axios";
+import React, {useContext, useEffect, useState} from "react";
+import {SystemInfoMessages} from "../../config/messages.config";
+import {SecurityTooltips} from "../../config/tooltips.config";
+import {AuthoritiesContext} from "../../util/authorities";
+import {UserContext} from "../../util/user-context";
+import HCCard from "../common/hc-card/hc-card";
+import styles from "./system-info.module.scss";
 
 
 const SystemInfo = (props) => {
@@ -155,7 +154,7 @@ const SystemInfo = (props) => {
             <Row gutter={16} type="flex" >
 
               { !authorityService.canDownloadProjectFiles() ? <Col>
-                <MLCard className={styles.download} >
+                <HCCard className={styles.download} >
                   <div className={styles.title}>Download Hub Central Files</div>
                   <p>{SystemInfoMessages.downloadHubCentralFiles}</p>
                   <Tooltip title={SecurityTooltips.missingPermission} placement="bottom">
@@ -167,10 +166,10 @@ const SystemInfo = (props) => {
                       >Download</Button>
                     </div>
                   </Tooltip>
-                </MLCard>
+                </HCCard>
               </Col>:
                 <Col>
-                  <MLCard className={styles.download} >
+                  <HCCard className={styles.download} >
                     <div className={styles.title}>Download Hub Central Files</div>
                     <p>{SystemInfoMessages.downloadHubCentralFiles}</p>
                     <div className={styles.buttonContainer}>
@@ -181,12 +180,12 @@ const SystemInfo = (props) => {
                         onClick={downloadHubCentralFiles}
                       >Download</Button>
                     </div>
-                  </MLCard>
+                  </HCCard>
                 </Col>
               }
 
               { !authorityService.canDownloadProjectFiles() ? <Col>
-                <MLCard className={styles.download}>
+                <HCCard className={styles.download}>
                   <div className={styles.title}>Download Project Files</div>
                   <p>{SystemInfoMessages.downloadProjectFiles}</p>
                   <Tooltip title={SecurityTooltips.missingPermission} placement="bottom">
@@ -198,10 +197,10 @@ const SystemInfo = (props) => {
                       >Download</Button>
                     </div>
                   </Tooltip>
-                </MLCard>
+                </HCCard>
               </Col>:
                 <Col>
-                  <MLCard className={styles.download} >
+                  <HCCard className={styles.download} >
                     <div className={styles.title}>Download Project Files</div>
                     <p>{SystemInfoMessages.downloadProjectFiles}</p>
                     <div className={styles.buttonContainer}>
@@ -212,12 +211,12 @@ const SystemInfo = (props) => {
                         onClick={downloadProjectFiles}
                       >Download</Button>
                     </div>
-                  </MLCard>
+                  </HCCard>
                 </Col>
               }
 
               { !authorityService.canClearUserData() ? <Col>
-                <MLCard className={styles.clearAll}>
+                <HCCard className={styles.clearAll}>
                   {isLoading === true ? <div className={styles.spinRunning}>
                     <Spin size={"large"} />
                   </div>: ""}
@@ -232,10 +231,10 @@ const SystemInfo = (props) => {
                       >Clear</Button>
                     </div>
                   </Tooltip>
-                </MLCard>
+                </HCCard>
               </Col>:
                 <Col>
-                  <MLCard className={styles.clearAll}>
+                  <HCCard className={styles.clearAll}>
                     {isLoading === true ? <div className={styles.spinRunning}>
                       <Spin size={"large"} />
                     </div>: ""}
@@ -249,7 +248,7 @@ const SystemInfo = (props) => {
                         onClick={handleClearData}
                       >Clear</Button>
                     </div>
-                  </MLCard>
+                  </HCCard>
                 </Col>
               }
 

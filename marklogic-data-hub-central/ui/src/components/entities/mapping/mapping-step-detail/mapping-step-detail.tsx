@@ -1,33 +1,33 @@
 
-import React, {useState, useEffect, CSSProperties, useRef, useContext} from "react";
-import {Table, Icon, Input, Alert, Dropdown, Menu, Checkbox, Spin, Button, Tooltip} from "antd";
-import styles from "./mapping-step-detail.module.scss";
-import "./mapping-step-detail.scss";
-import EntityMapTable from "../entity-map-table/entity-map-table";
+import {faCog, faKey, faLayerGroup, faPencilAlt, faSearch} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPencilAlt, faSearch, faCog, faLayerGroup, faKey} from "@fortawesome/free-solid-svg-icons";
-import {getInitialChars, convertDateFromISO, getLastChars, extractCollectionFromSrcQuery} from "../../../../util/conversionFunctions";
-import {getMappingValidationResp, getNestedEntities} from "../../../../util/manageArtifacts-service";
-import SplitPane from "react-split-pane";
+import {Alert, Button, Checkbox, Dropdown, Icon, Input, Menu, Spin, Table, Tooltip} from "antd";
+import React, {CSSProperties, useContext, useEffect, useRef, useState} from "react";
 import Highlighter from "react-highlight-words";
-import SourceNavigation from "../source-navigation/source-navigation";
-import ExpandCollapse from "../../../expand-collapse/expand-collapse";
 import {useHistory} from "react-router-dom";
-import {getUris, getDoc} from "../../../../util/search-service";
-import {xmlParserForMapping} from "../../../../util/record-parser";
-import {CurationContext} from "../../../../util/curation-context";
-import {AuthoritiesContext} from "../../../../util/authorities";
-import {MappingStep, StepType} from "../../../../types/curation-types";
-import {getMappingArtifactByMapName, updateMappingArtifact, getMappingFunctions, getMappingRefs} from "../../../../api/mapping";
-import Steps from "../../../steps/steps";
-import {AdvMapTooltips} from "../../../../config/tooltips.config";
+import SplitPane from "react-split-pane";
+import useDynamicRefs from "use-dynamic-refs";
+import {getMappingArtifactByMapName, getMappingFunctions, getMappingRefs, updateMappingArtifact} from "../../../../api/mapping";
 import arrayIcon from "../../../../assets/icon_array.png";
 import relatedEntityIcon from "../../../../assets/icon_related_entities.png";
-import CustomPageHeader from "../../page-header/page-header";
+import {mappingColors, paginationMapping} from "../../../../config/mapping.config";
+import {AdvMapTooltips} from "../../../../config/tooltips.config";
+import {MappingStep, StepType} from "../../../../types/curation-types";
+import {AuthoritiesContext} from "../../../../util/authorities";
+import {convertDateFromISO, extractCollectionFromSrcQuery, getInitialChars, getLastChars} from "../../../../util/conversionFunctions";
+import {CurationContext} from "../../../../util/curation-context";
+import {getMappingValidationResp, getNestedEntities} from "../../../../util/manageArtifacts-service";
+import {xmlParserForMapping} from "../../../../util/record-parser";
+import {getDoc, getUris} from "../../../../util/search-service";
 import {clearSessionStorageOnRefresh, getViewSettings, setViewSettings} from "../../../../util/user-context";
-import {paginationMapping, mappingColors} from "../../../../config/mapping.config";
-import useDynamicRefs from "use-dynamic-refs";
-import MLCard from "../../../shared/ml-card/ml-card";
+import HCCard from "../../../common/hc-card/hc-card";
+import ExpandCollapse from "../../../expand-collapse/expand-collapse";
+import Steps from "../../../steps/steps";
+import CustomPageHeader from "../../page-header/page-header";
+import EntityMapTable from "../entity-map-table/entity-map-table";
+import SourceNavigation from "../source-navigation/source-navigation";
+import styles from "./mapping-step-detail.module.scss";
+import "./mapping-step-detail.scss";
 
 const DEFAULT_MAPPING_STEP: MappingStep = {
   name: "",
@@ -1421,13 +1421,13 @@ const MappingStepDetail: React.FC = () => {
                 emptyData ?
                   <div id="noData">
                     <br/><br/>
-                    <MLCard className={styles.emptyCard}>
+                    <HCCard className={styles.emptyCard}>
                       <div className={styles.emptyText}>
                         <p>Unable to find source records using the specified collection or query.</p>
                         <p>Load some data that mapping can use as reference and/or edit the step
                                             settings to use a source collection or query that will return some results.</p>
                       </div>
-                    </MLCard>
+                    </HCCard>
                   </div>
                   :
                   <div id="dataPresent">

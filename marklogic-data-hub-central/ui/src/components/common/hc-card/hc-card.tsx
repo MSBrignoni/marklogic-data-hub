@@ -1,16 +1,16 @@
 import React from "react";
 import {Card, CardProps} from "react-bootstrap";
-import styles from "./ml-card.module.scss";
+import styles from "./hc-card.module.scss";
 
 
-export interface MLCardProps extends CardProps {
+export interface HCCardProps extends CardProps {
   actions?: any[],
   titleExtra?: any,
   bodyClassName?: string,
   footerClassName?: string
 }
 
-function MLCard({className, actions, title, titleExtra, bodyClassName, footerClassName, children, ...others}: MLCardProps): JSX.Element {
+function HCCard({className, actions, title, titleExtra, bodyClassName, footerClassName, children, ...others}: HCCardProps): JSX.Element {
 
   var percentage = actions ? 100 / actions.length + '%' : '100%';
 
@@ -35,4 +35,4 @@ function MLCard({className, actions, title, titleExtra, bodyClassName, footerCla
   );
 }
 
-export default MLCard;
+export default HCCard;

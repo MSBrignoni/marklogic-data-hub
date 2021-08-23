@@ -1,14 +1,13 @@
-import React, {useState} from "react";
-import styles from "./custom-card.module.scss";
-import {Card, Row, Col, Modal, Select, Tooltip} from "antd";
-import {convertDateFromISO, getInitialChars, extractCollectionFromSrcQuery} from "../../../util/conversionFunctions";
-import {CustomStepTooltips} from "../../../config/tooltips.config";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import Steps from "../../steps/steps";
 import {faCog} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {Col, Modal, Row, Select, Tooltip} from "antd";
+import React, {useState} from "react";
 import {Link, useHistory} from "react-router-dom";
-import {SecurityTooltips} from "../../../config/tooltips.config";
-import MLCard from "../../shared/ml-card/ml-card";
+import {CustomStepTooltips, SecurityTooltips} from "../../../config/tooltips.config";
+import {convertDateFromISO, extractCollectionFromSrcQuery, getInitialChars} from "../../../util/conversionFunctions";
+import HCCard from "../../common/hc-card/hc-card";
+import Steps from "../../steps/steps";
+import styles from "./custom-card.module.scss";
 
 const {Option} = Select;
 
@@ -150,7 +149,7 @@ const CustomCard: React.FC<Props> = (props) => {
                 onMouseOver={(e) => handleMouseOver(e, elem.name)}
                 onMouseLeave={handleMouseLeave}
               >
-                <MLCard
+                <HCCard
                   actions={[
                     <Tooltip title={CustomStepTooltips.viewCustom} placement="bottom">
                       <span className={styles.viewStepSettingsIcon} onClick={() => OpenStepSettings(elem.name)} role="edit-custom button" data-testid={elem.name+"-edit"}><FontAwesomeIcon icon={faCog}/> Edit Step Settings</span>
@@ -219,7 +218,7 @@ const CustomCard: React.FC<Props> = (props) => {
                       }
                     </div>
                   </div>
-                </MLCard>
+                </HCCard>
               </div>
             </Col>
           ))

@@ -1,30 +1,29 @@
-import React, {useState, useEffect, useContext} from "react";
-import {Modal, Row, Col, Menu, Dropdown, Collapse, Icon, Button, Input, Radio, Table, Tooltip} from "antd";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlusSquare} from "@fortawesome/free-solid-svg-icons";
+import {DownOutlined} from "@ant-design/icons";
 import {faTrashAlt} from "@fortawesome/free-regular-svg-icons";
+import {faPlusSquare} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {Button, Col, Collapse, Dropdown, Icon, Input, Menu, Modal, Radio, Row, Table, Tooltip} from "antd";
+import React, {useContext, useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
+import {calculateMatchingActivity, getDocFromURI, previewMatchingActivity, updateMatchingArtifact} from "../../../../api/matching";
+import {MatchingStepDetailText, MatchingStepTooltips} from "../../../../config/tooltips.config";
+import {MatchingStep} from "../../../../types/curation-types";
+import {CurationContext} from "../../../../util/curation-context";
+import {clearSessionStorageOnRefresh, getViewSettings, setViewSettings} from "../../../../util/user-context";
+import HCCard from "../../../common/hc-card/hc-card";
+import ExpandCollapse from "../../../expand-collapse/expand-collapse";
+import NumberIcon from "../../../number-icon/number-icon";
+import CustomPageHeader from "../../page-header/page-header";
+import CompareValuesModal from "../compare-values-modal/compare-values-modal";
+import ExpandableTableView from "../expandable-table-view/expandable-table-view";
+import MultiSlider from "../multi-slider/multi-slider";
+import RulesetMultipleModal from "../ruleset-multiple-modal/ruleset-multiple-modal";
+import RulesetSingleModal from "../ruleset-single-modal/ruleset-single-modal";
+import ThresholdModal from "../threshold-modal/threshold-modal";
 import styles from "./matching-step-detail.module.scss";
 import "./matching-step-detail.scss";
-import {MatchingStepTooltips} from "../../../../config/tooltips.config";
-import CustomPageHeader from "../../page-header/page-header";
-import MLCard from "../../../shared/ml-card/ml-card";
 
-import RulesetSingleModal from "../ruleset-single-modal/ruleset-single-modal";
-import RulesetMultipleModal from "../ruleset-multiple-modal/ruleset-multiple-modal";
-import MultiSlider from "../multi-slider/multi-slider";
-import NumberIcon from "../../../number-icon/number-icon";
-import ThresholdModal from "../threshold-modal/threshold-modal";
 
-import {CurationContext} from "../../../../util/curation-context";
-import {MatchingStep} from "../../../../types/curation-types";
-import {MatchingStepDetailText} from "../../../../config/tooltips.config";
-import {updateMatchingArtifact, calculateMatchingActivity, previewMatchingActivity, getDocFromURI} from "../../../../api/matching";
-import {DownOutlined} from "@ant-design/icons";
-import {getViewSettings, setViewSettings, clearSessionStorageOnRefresh} from "../../../../util/user-context";
-import ExpandCollapse from "../../../expand-collapse/expand-collapse";
-import ExpandableTableView from "../expandable-table-view/expandable-table-view";
-import CompareValuesModal from "../compare-values-modal/compare-values-modal";
 
 const DEFAULT_MATCHING_STEP: MatchingStep = {
   name: "",
@@ -630,7 +629,7 @@ const MatchingStepDetail: React.FC = () => {
               {matchingActivity?.thresholdActions?.map((combinationsObject, i, combArr) => {
                 return <Col span={8} key={`${combinationsObject["name"]}-${i}`}>
                   <div className={styles.matchCombinationsColsContainer}>
-                    <MLCard className={styles.matchCombinationsCardStyle}>
+                    <HCCard className={styles.matchCombinationsCardStyle}>
                       <div className={combArr.length > 1 ? styles.colsWithoutDivider : styles.colsWithSingleMatch}>
                         <div className={styles.combinationlabel} aria-label={`combinationLabel-${combinationsObject.name}`}>Minimum combinations for <strong>{combinationsObject.name}</strong> threshold:</div>
 
@@ -645,7 +644,7 @@ const MatchingStepDetail: React.FC = () => {
 
                         })}
                       </div>
-                    </MLCard>
+                    </HCCard>
                   </div>
                 </Col>;
               })

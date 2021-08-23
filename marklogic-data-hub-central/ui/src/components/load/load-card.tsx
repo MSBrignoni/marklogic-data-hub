@@ -1,16 +1,15 @@
-import React, {CSSProperties, useState} from "react";
-import styles from "./load-card.module.scss";
-import {useHistory} from "react-router-dom";
-import {Card, Icon, Row, Col, Divider, Modal, Select, Tooltip} from "antd";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCog} from "@fortawesome/free-solid-svg-icons";
 import {faTrashAlt} from "@fortawesome/free-regular-svg-icons";
+import {faCog} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {Col, Divider, Icon, Modal, Row, Select, Tooltip} from "antd";
+import React, {CSSProperties, useState} from "react";
+import {Link, useHistory} from "react-router-dom";
 import sourceFormatOptions from "../../config/formats.config";
-import {convertDateFromISO} from "../../util/conversionFunctions";
-import MLCard from "../shared/ml-card/ml-card";
-import Steps from "../steps/steps";
 import {AdvLoadTooltips, SecurityTooltips} from "../../config/tooltips.config";
-import {Link} from "react-router-dom";
+import {convertDateFromISO} from "../../util/conversionFunctions";
+import HCCard from "../common/hc-card/hc-card";
+import Steps from "../steps/steps";
+import styles from "./load-card.module.scss";
 
 const {Option} = Select;
 
@@ -341,20 +340,20 @@ const LoadCard: React.FC<Props> = (props) => {
     <div id="load-card" aria-label="load-card" className={styles.loadCard}>
       <Row gutter={16} type="flex" >
         {props.canReadWrite ? <Col >
-          <MLCard className={styles.addNewCard}>
+          <HCCard className={styles.addNewCard}>
             <div aria-label="add-new-card"><Icon type="plus-circle" className={styles.plusIcon} theme="filled" onClick={OpenAddNew} /></div>
             <br />
             <p className={styles.addNewContent}>Add New</p>
-          </MLCard>
+          </HCCard>
 
         </Col> : <Col>
-          <Tooltip title={"Load: "+SecurityTooltips.missingPermission} overlayStyle={tooltipOverlayStyle}><MLCard
+          <Tooltip title={"Load: "+SecurityTooltips.missingPermission} overlayStyle={tooltipOverlayStyle}><HCCard
             className={styles.addNewCardDisabled}
             data-testid="disabledAddNewCard">
             <div aria-label="add-new-card-disabled"><Icon type="plus-circle" className={styles.plusIconDisabled} theme="filled"/></div>
             <br />
             <p className={styles.addNewContentDisabled}>Add New</p>
-          </MLCard></Tooltip>
+          </HCCard></Tooltip>
         </Col>}{ props.data && props.data.length > 0 ? props.data.map((elem, index) => (
           <Col key={index}>
             <div
@@ -362,7 +361,7 @@ const LoadCard: React.FC<Props> = (props) => {
               onMouseLeave={(e) => handleMouseLeave()}
             >
         
-              <MLCard 
+              <HCCard 
                 className={styles.cardStyle}
                 actions={[
                   <Tooltip title={"Step Settings"} placement="bottom"><i key="edit" className={styles.editIcon}><FontAwesomeIcon icon={faCog} data-testid={elem.name+"-edit"} onClick={() => OpenStepSettings(index)}/></i></Tooltip>,
@@ -404,7 +403,7 @@ const LoadCard: React.FC<Props> = (props) => {
                     </div></div></Tooltip> : null}
                   </div>
                 </div>
-              </MLCard>
+              </HCCard>
 
             </div>
           </Col>)) : <span></span> }

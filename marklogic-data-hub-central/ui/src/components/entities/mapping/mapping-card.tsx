@@ -1,17 +1,17 @@
-import React, {useState, useEffect, useContext} from "react";
-import styles from "./mapping-card.module.scss";
-import {Card, Icon, Divider, Row, Col, Modal, Select, Tooltip} from "antd";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrashAlt} from "@fortawesome/free-regular-svg-icons";
-import {convertDateFromISO, getInitialChars, extractCollectionFromSrcQuery} from "../../../util/conversionFunctions";
-import {AdvMapTooltips, SecurityTooltips} from "../../../config/tooltips.config";
+import {faCog, faPencilAlt} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {Col, Divider, Icon, Modal, Row, Select, Tooltip} from "antd";
+import React, {useContext, useEffect, useState} from "react";
 import {Link, useHistory} from "react-router-dom";
-import {faPencilAlt, faCog} from "@fortawesome/free-solid-svg-icons";
-import Steps from "../../steps/steps";
-import {CurationContext} from "../../../util/curation-context";
+import {AdvMapTooltips, SecurityTooltips} from "../../../config/tooltips.config";
 import {StepType} from "../../../types/curation-types";
+import {convertDateFromISO, extractCollectionFromSrcQuery, getInitialChars} from "../../../util/conversionFunctions";
+import {CurationContext} from "../../../util/curation-context";
 import {getViewSettings, setViewSettings} from "../../../util/user-context";
-import MLCard from "../../shared/ml-card/ml-card";
+import HCCard from "../../common/hc-card/hc-card";
+import Steps from "../../steps/steps";
+import styles from "./mapping-card.module.scss";
 
 const {Option} = Select;
 
@@ -365,19 +365,19 @@ const MappingCard: React.FC<Props> = (props) => {
     <div className={styles.loadContainer}>
       <Row gutter={16} type="flex" >
         {props.canReadWrite ? <Col>
-          <MLCard
+          <HCCard
             className={styles.addNewCard}>
             <div><Icon type="plus-circle" className={styles.plusIcon} theme="filled" onClick={OpenAddNew}/></div>
             <br />
             <p className={styles.addNewContent}>Add New</p>
-          </MLCard>
+          </HCCard>
         </Col> : <Col>
-          <Tooltip title={"Curate: "+SecurityTooltips.missingPermission} overlayStyle={tooltipOverlayStyle}><MLCard
+          <Tooltip title={"Curate: "+SecurityTooltips.missingPermission} overlayStyle={tooltipOverlayStyle}><HCCard
             className={styles.addNewCardDisabled}>
             <div aria-label="add-new-card-disabled"><Icon type="plus-circle" className={styles.plusIconDisabled} theme="filled"/></div>
             <br/>
             <p className={styles.addNewContent}>Add New</p>
-          </MLCard></Tooltip>
+          </HCCard></Tooltip>
         </Col>}
         {
           props.data && props.data.length > 0 ?
@@ -388,7 +388,7 @@ const MappingCard: React.FC<Props> = (props) => {
                   onMouseOver={(e) => handleMouseOver(e, elem.name)}
                   onMouseLeave={(e) => handleMouseLeave()}
                 >
-                  <MLCard
+                  <HCCard
                     actions={[
                       <Tooltip title={"Step Details"} placement="bottom"><i className={styles.stepDetails}><FontAwesomeIcon icon={faPencilAlt} onClick={() => openMapStepDetails(elem.name, index)} data-testid={`${elem.name}-stepDetails`} /></i></Tooltip>,
                       <Tooltip title={"Step Settings"} placement="bottom"><i className={styles.editIcon} role="edit-mapping button" key="last"><FontAwesomeIcon icon={faCog} data-testid={elem.name + "-edit"} onClick={() => OpenStepSettings(index)} /></i></Tooltip>,
@@ -456,7 +456,7 @@ const MappingCard: React.FC<Props> = (props) => {
                         }
                       </div>
                     </div>
-                  </MLCard>
+                  </HCCard>
                 </div>
               </Col>
             ))
