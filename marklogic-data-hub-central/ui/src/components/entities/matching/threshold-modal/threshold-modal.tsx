@@ -8,6 +8,8 @@ import {CurationContext} from "../../../../util/curation-context";
 import {MatchingStep, Threshold} from "../../../../types/curation-types";
 import {NewMatchTooltips} from "../../../../config/tooltips.config";
 import {updateMatchingArtifact} from "../../../../api/matching";
+import { QuestionCircleFill } from "react-bootstrap-icons";
+import HCTooltip from "../../../common/hc-tooltip/hc-tooltip";
 
 type Props = {
   isVisible: boolean;
@@ -361,9 +363,9 @@ const ThresholdModal: React.FC<Props> = (props) => {
           onChange={handleInputChange}
           onBlur={handleInputChange}
         />
-        <Tooltip title={NewMatchTooltips.uri}>
-          <Icon type="question-circle" className={styles.icon} theme="filled" />
-        </Tooltip>
+        <HCTooltip text={NewMatchTooltips.uri} id="uri-tooltip" placement="top">
+          <QuestionCircleFill color="#7F86B5" className={styles.icon} size={13} />
+        </HCTooltip>
       </Form.Item>
       <Form.Item
         className={styles.formItem}
@@ -385,9 +387,9 @@ const ThresholdModal: React.FC<Props> = (props) => {
           onChange={handleInputChange}
           onBlur={handleInputChange}
         />
-        <Tooltip title={NewMatchTooltips.function}>
-          <Icon type="question-circle" className={styles.icon} theme="filled" />
-        </Tooltip>
+        <HCTooltip text={NewMatchTooltips.function} id="function-tooltip" placement="top">
+          <QuestionCircleFill color="#7F86B5" className={styles.icon} size={13} />
+        </HCTooltip>
       </Form.Item>
       <Form.Item
         className={styles.formItem}
@@ -404,9 +406,9 @@ const ThresholdModal: React.FC<Props> = (props) => {
           onChange={handleInputChange}
           onBlur={handleInputChange}
         />
-        <Tooltip title={NewMatchTooltips.namespace}>
-          <Icon type="question-circle" className={styles.icon} theme="filled" />
-        </Tooltip>
+        <HCTooltip text={NewMatchTooltips.namespace} id="function-tooltip" placement="top">
+          <QuestionCircleFill color="#7F86B5" className={styles.icon} size={13} />
+        </HCTooltip>
       </Form.Item>
     </>
   );

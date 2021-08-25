@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import styles from "./custom-card.module.scss";
-import {Card, Row, Col, Modal, Select, Tooltip} from "antd";
+import {Card, Row, Col, Modal, Select} from "antd";
 import {convertDateFromISO, getInitialChars, extractCollectionFromSrcQuery} from "../../../util/conversionFunctions";
 import {CustomStepTooltips} from "../../../config/tooltips.config";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -8,6 +8,7 @@ import Steps from "../../steps/steps";
 import {faCog} from "@fortawesome/free-solid-svg-icons";
 import {Link, useHistory} from "react-router-dom";
 import {SecurityTooltips} from "../../../config/tooltips.config";
+import HCTooltip from "../../common/hc-tooltip/hc-tooltip";
 
 const {Option} = Select;
 
@@ -151,9 +152,9 @@ const CustomCard: React.FC<Props> = (props) => {
               >
                 <Card
                   actions={[
-                    <Tooltip title={CustomStepTooltips.viewCustom} placement="bottom">
+                    <HCTooltip text={CustomStepTooltips.viewCustom} id="custom-card-tooltip" placement="bottom">
                       <span className={styles.viewStepSettingsIcon} onClick={() => OpenStepSettings(elem.name)} role="edit-custom button" data-testid={elem.name+"-edit"}><FontAwesomeIcon icon={faCog}/> Edit Step Settings</span>
-                    </Tooltip>,
+                    </HCTooltip>,
                   ]}
                   className={styles.cardStyle}
                   size="small"
@@ -192,7 +193,7 @@ const CustomCard: React.FC<Props> = (props) => {
                       {
                         /** dropdown of flow names to add this custom step to */
                         selectVisible ?
-                          <Tooltip title={"Curate: "+SecurityTooltips.missingPermission} placement={"bottom"} visible={tooltipVisible && !props.canWriteFlow}>
+                          <HCTooltip text={"Curate: "+SecurityTooltips.missingPermission} id="select-flow-tooltip" placement="bottom" show={tooltipVisible && !props.canWriteFlow}>
                             <div className={styles.cardLinkSelect} data-testid={`add-${elem.name}-select`}>
                               <Select
                                 style={{width: "100%"}}
@@ -213,7 +214,7 @@ const CustomCard: React.FC<Props> = (props) => {
                                 }
                               </Select>
                             </div>
-                          </Tooltip>
+                          </HCTooltip>
                           :
                           null
                       }

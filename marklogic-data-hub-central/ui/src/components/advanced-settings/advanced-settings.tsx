@@ -8,6 +8,8 @@ import StepsConfig from "../../config/steps.config";
 import "./advanced-settings.scss";
 import AdvancedTargetCollections from "./advanced-target-collections";
 import {CurationContext} from "../../util/curation-context";
+import { QuestionCircleFill } from "react-bootstrap-icons";
+import HCTooltip from "../common/hc-tooltip/hc-tooltip";
 
 const {TextArea} = Input;
 const {Option} = Select;
@@ -591,10 +593,14 @@ const AdvancedSettings: React.FC<Props> = (props) => {
           >
             {sourceDbOptions}
           </Select>
-          <div className={styles.selectTooltip}>
-            <Tooltip title={tooltips.sourceDatabase} placement={"right"}>
-              <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
-            </Tooltip>
+          <div className={styles.selectHCTooltip}>
+            <HCTooltip
+              text={tooltips.sourceDatabase}
+              id="source-database-tooltip"
+              placement="left"
+            >
+                <QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} />
+            </HCTooltip>
           </div>
         </Form.Item> : null
         }<Form.Item
@@ -614,10 +620,14 @@ const AdvancedSettings: React.FC<Props> = (props) => {
           >
             {targetDbOptions}
           </Select>
-          <div className={styles.selectTooltip}>
-            <Tooltip title={tooltips.targetDatabase} placement={"right"}>
-              <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
-            </Tooltip>
+          <div className={styles.selectHCTooltip}>
+           <HCTooltip
+            text={tooltips.targetDatabase}
+            id="target-database-tooltip"
+            placement="left"
+           >
+              <QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} />
+            </HCTooltip>
           </div>
         </Form.Item>
         {usesAdvancedTargetCollections ? <Form.Item
@@ -657,10 +667,14 @@ const AdvancedSettings: React.FC<Props> = (props) => {
                 return <Option value={col} key={col} label={col}>{col}</Option>;
               })}
             </Select>
-            <div className={styles.inputTooltip}>
-              <Tooltip title={tooltips.additionalCollections} placement={"right"}>
-                <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
-              </Tooltip>
+            <div className={styles.inputHCTooltip}>
+              <HCTooltip
+                text={tooltips.additionalCollections}
+                id="additional-coll-tooltip"
+                placement="left"
+              >
+                <QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} />
+              </HCTooltip>
             </div>
           </Form.Item>}
         {usesAdvancedTargetCollections ? null : <Form.Item
@@ -684,10 +698,14 @@ const AdvancedSettings: React.FC<Props> = (props) => {
             disabled={!canReadWrite}
             className={styles.inputWithTooltip}
           />
-          <div className={styles.inputTooltip}>
-            <Tooltip title={tooltips.targetPermissions} placement={"right"}>
-              <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
-            </Tooltip>
+          <div className={styles.inputHCTooltip}>
+            <HCTooltip
+              text={tooltips.targetPermissions}
+              id="target-permissions-tooltip"
+              placement="left"
+            >
+              <QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} />
+            </HCTooltip>
           </div>
           <div className={styles.validationError} data-testid="validationError">
             {permissionValidationError}
@@ -710,10 +728,14 @@ const AdvancedSettings: React.FC<Props> = (props) => {
           >
             {targetFormatOptions}
           </Select>
-          <div className={styles.inputTooltip}>
-            <Tooltip title={tooltips.targetFormat} placement={"right"}>
-              <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
-            </Tooltip>
+          <div className={styles.inputHCTooltip}>
+            <HCTooltip
+              text={tooltips.targetFormat}
+              id="target-format-tooltip"
+              placement="left"
+            >
+              <QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} />
+            </HCTooltip>
           </div>
         </Form.Item> : null }
         <Form.Item
@@ -733,10 +755,14 @@ const AdvancedSettings: React.FC<Props> = (props) => {
           >
             {provGranOpts}
           </Select>
-          <div className={styles.selectTooltip}>
-            <Tooltip title={tooltips.provGranularity} placement={"right"}>
-              <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
-            </Tooltip>
+          <div className={styles.selectHCTooltip}>
+            <HCTooltip
+              text={tooltips.provGranularity}
+              id="prov-granularity-tooltip"
+              placement="left"
+            >
+              <QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} />
+            </HCTooltip>
           </div>
         </Form.Item>
         {   stepType === "mapping" ? <Form.Item
@@ -756,10 +782,14 @@ const AdvancedSettings: React.FC<Props> = (props) => {
           >
             {valEntityOpts}
           </Select>
-          <div className={styles.selectTooltip}>
-            <Tooltip title={tooltips.validateEntity} placement={"right"}>
-              <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
-            </Tooltip>
+          <div className={styles.selectHCTooltip}>
+            <HCTooltip
+              text={tooltips.validateEntity}
+              id="validate-entity-tooltip"
+              placement="left"
+            >
+              <QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} />
+            </HCTooltip>
           </div>
         </Form.Item> : ""}
         {   stepType === "mapping" ? <Form.Item
@@ -771,9 +801,13 @@ const AdvancedSettings: React.FC<Props> = (props) => {
             <Radio value={true} data-testid="attachmentTrue">Yes</Radio>
             <Radio value={false} data-testid="attachmentFalse">No</Radio>
           </Radio.Group>
-          <Tooltip title={tooltips.attachSourceDocument} placement={"right"}>
-            <Icon type="question-circle" className={styles.centerCircle} theme="filled" />
-          </Tooltip>
+          <HCTooltip
+            text={tooltips.attachSourceDocument}
+            id="attach-source-document-tooltip"
+            placement="left"
+           >
+              <QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} />
+          </HCTooltip>
         </Form.Item>: ""}
         <Form.Item
           label={<span>Batch Size</span>}
@@ -789,10 +823,14 @@ const AdvancedSettings: React.FC<Props> = (props) => {
             className={styles.inputBatchSize}
             onBlur={sendPayload}
           />
-          <div className={styles.inputTooltip}>
-            <Tooltip title={tooltips.batchSize} placement={"right"}>
-              <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
-            </Tooltip>
+          <div className={styles.inputHCTooltip}>
+            <HCTooltip
+              text={tooltips.batchSize}
+              id="batch-size-tooltip"
+              placement="right"
+            >
+              <QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} />
+            </HCTooltip>
           </div>
         </Form.Item>
         { usesHeaders ?
@@ -815,10 +853,14 @@ const AdvancedSettings: React.FC<Props> = (props) => {
                 style={!headersValid ? {border: "solid 1px #C00"} : {}}
               />
               { !headersValid ? <div className={styles.invalid}>{invalidJSONMessage}</div> : null }
-              <div className={styles.textareaTooltip}>
-                <Tooltip title={tooltips.headers} placement={"right"}>
-                  <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
-                </Tooltip>
+              <div className={styles.textareaHCTooltip}>
+                <HCTooltip
+                  text={tooltips.headers}
+                  id="headers-tooltip"
+                  placement="left"
+                >
+                  <QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} />
+                </HCTooltip>
               </div>
             </Form.Item>
           </>
@@ -840,9 +882,13 @@ const AdvancedSettings: React.FC<Props> = (props) => {
         />
         { interceptorsExpanded ? <div className={styles.expandContainer}>
           <div className={styles.textareaExpandTooltip}>
-            <Tooltip title={tooltips.interceptors} placement={"right"}>
-              <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
-            </Tooltip>
+            <HCTooltip
+              text={tooltips.interceptors}
+              id="interceptors-tooltip"
+              placement="left"
+            >
+              <QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} />
+            </HCTooltip>
           </div>
           <TextArea
             id="interceptors"
@@ -867,7 +913,13 @@ const AdvancedSettings: React.FC<Props> = (props) => {
               rotate={customHookExpanded ? 90 : 0}
             />
             <span className={styles.expandLabel} onClick={() => setCustomHookExpanded(!customHookExpanded)}>Custom Hook</span>
-            <Tooltip title={tooltips.customHookDeprecated} placement={"right"}><span className={styles.deprecatedLabel}>DEPRECATED</span></Tooltip>
+            <HCTooltip
+              text={tooltips.customHookDeprecated}
+              id="custom-hook-deprecated-tooltip"
+              placement="left"
+            >
+              <span className={styles.deprecatedLabel}>DEPRECATED</span>
+            </HCTooltip>
           </span>}
           labelAlign="left"
           className={styles.formItem}
@@ -875,9 +927,13 @@ const AdvancedSettings: React.FC<Props> = (props) => {
         />
         { customHookExpanded ? <div className={styles.expandContainer}>
           <div className={styles.textareaExpandTooltip}>
-            <Tooltip title={tooltips.customHook} placement={"right"}>
-              <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
-            </Tooltip>
+            <HCTooltip
+              text={tooltips.customHook}
+              id="custom-hook-tooltip"
+              placement="left"
+            >
+              <QuestionCircleFill color="#7F86B5" size={13} />
+            </HCTooltip>
           </div>
           <TextArea
             id="customHook"
@@ -911,10 +967,14 @@ const AdvancedSettings: React.FC<Props> = (props) => {
               onBlur={handleBlur}
             />
             { !additionalSettingsValid ? <div className={styles.invalid}>{invalidJSONMessage}</div> : null }
-            <div className={styles.selectTooltip}>
-              <Tooltip title={props.tooltipsData.additionalSettings} placement={"right"}>
-                <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
-              </Tooltip>
+            <div className={styles.selectHCTooltip}>
+              <HCTooltip
+                text={props.tooltipsData.additionalSettings}
+                id="additional-settings-tooltip"
+                placement="left"
+              >
+                <QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} />
+              </HCTooltip>
             </div>
           </Form.Item> : null
         }

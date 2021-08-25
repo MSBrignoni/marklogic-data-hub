@@ -16,6 +16,7 @@ import DetailPageNonEntity from "../components/detail-page-non-entity/detail-pag
 import {SearchContext} from "../util/search-context";
 import {fetchQueries} from "../api/queries";
 import {AuthoritiesContext} from "../util/authorities";
+import HCTooltip from "../components/common/hc-tooltip/hc-tooltip";
 
 
 interface Props extends RouteComponentProps<any> { }
@@ -297,59 +298,7 @@ const Detail: React.FC<Props> = ({history, location}) => {
   };
 
   return (
-    entityInstanceDocument === undefined ? <div style={{marginTop: "40px"}}>
-      <AsyncLoader />
-    </div> :
 
-      entityInstanceDocument ?
-        <Layout>
-          <Content className={styles.detailContent}>
-            <div id="back-button" style={{marginLeft: "-23px"}} onClick={() => history.push(selectedSearchOptions)}>
-              <PageHeader
-                title={<span className={styles.title}>Back to results</span>}
-                data-cy="back-button"
-                onBack={() => history.push(selectedSearchOptions)}
-              />
-            </div>
-            <div className={styles.header}>
-              <div className={styles.heading}>
-                {data && <DetailHeader document={data} contentType={contentType} uri={uri} primaryKey={pkValue} sources={sources.length ? sources : parentPagePreferences["sources"]} />}
-              </div>
-              <div id="menu" className={styles.menu}>
-                <Menu id="subMenu" onClick={(event) => handleClick(event)} mode="horizontal" selectedKeys={[selected]}>
-                  <Menu.Item key="instance" id="instance" data-cy="instance-view">
-                    <Tooltip title={"Show the processed data"}>
-                      <FontAwesomeIcon icon={faThList} size="lg" />
-                      <span className={styles.subMenu}>Instance</span>
-                    </Tooltip>
-                  </Menu.Item>
-                  <Menu.Item key="full" id="full" data-cy="source-view">
-                    <Tooltip title={"Show the complete " + contentType.toUpperCase()} >
-                      {contentType.toUpperCase() === "XML" ?
-                        <FontAwesomeIcon icon={faCode} size="lg" />
-                        :
-                        <span className={styles.jsonIcon}></span>
-                      }
-                      <span className={styles.subMenu}>{contentType.toUpperCase()}</span>
-                    </Tooltip>
-                  </Menu.Item>
-                </Menu>
-              </div>
-            </div>
-            <div>
-              {
-                isLoading || user.error.type === "ALERT" ? <div style={{marginTop: "40px"}}>
-                  <AsyncLoader />
-                </div>
-                  :
-                  contentType === "json" ?
-                    selected === "instance" ? (entityInstance && <TableView document={isEntityInstance ? entityInstance : {}} contentType={contentType} location={state ? state["id"] : {}} isEntityInstance={entityInstanceDocument} />) : (data && <pre data-testid="json-container">{jsonFormatter(data)}</pre>)
-                    :
-                    selected === "instance" ? (entityInstance && <TableView document={isEntityInstance ? entityInstance : {}} contentType={contentType} location={state ? state["id"] : {}} isEntityInstance={entityInstanceDocument} />) : (xml && <pre data-testid="xml-container">{xmlFormatter(xml)}</pre>)
-              }
-            </div>
-          </Content>
-        </Layout> :
         <DetailPageNonEntity
           uri={uri}
           sourcesTableData={sourcesTableData}

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from "react";
-import {Modal, Row, Col, Card, Menu, Dropdown, Collapse, Icon, Button, Input, Radio, Table, Tooltip} from "antd";
+import {Modal, Row, Col, Card, Menu, Dropdown, Collapse, Button, Input, Radio, Table} from "antd";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlusSquare} from "@fortawesome/free-solid-svg-icons";
 import {faTrashAlt} from "@fortawesome/free-regular-svg-icons";
@@ -24,6 +24,8 @@ import {getViewSettings, setViewSettings, clearSessionStorageOnRefresh} from "..
 import ExpandCollapse from "../../../expand-collapse/expand-collapse";
 import ExpandableTableView from "../expandable-table-view/expandable-table-view";
 import CompareValuesModal from "../compare-values-modal/compare-values-modal";
+import HCTooltip from "../../../common/hc-tooltip/hc-tooltip";
+import { QuestionCircleFill } from "react-bootstrap-icons";
 
 const DEFAULT_MATCHING_STEP: MatchingStep = {
   name: "",
@@ -738,9 +740,9 @@ const MatchingStepDetail: React.FC = () => {
               >
                 <span className={styles.radioTitle}>Test URIs</span>
                 <span className={styles.selectTooltip} aria-label="testUriOnlyTooltip">
-                  <Tooltip title={MatchingStepTooltips.testUris} placement={"right"}>
-                    <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
-                  </Tooltip><br />
+                  <HCTooltip text={MatchingStepTooltips.testUris} id="test-all-uris-tooltip" placement="right">
+                    <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle}/>
+                  </HCTooltip><br />
                 </span>
                 <Input
                   placeholder="Enter URI or Paste URIs"
@@ -772,9 +774,11 @@ const MatchingStepDetail: React.FC = () => {
               // validateStatus={duplicateUriWarning || singleUriWarning ? "error" : ""} // TODO handle vvalidation in React Bootstrap components
             >
               <span className={styles.radioTitle}>Test URIs with All Data</span>
-              <span aria-label="testUriTooltip"><Tooltip title={MatchingStepTooltips.testUrisAllData} placement={"right"}>
-                <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
-              </Tooltip></span><br />
+              <span aria-label="testUriTooltip">
+                <HCTooltip text={MatchingStepTooltips.testUrisAllData} id="test-uris-all-data-tooltip" placement="right">
+                  <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle}/>
+                </HCTooltip>
+              </span><br />
               <Input
                 placeholder="Enter URI or Paste URIs"
                 className={styles.uriInput}
@@ -799,9 +803,11 @@ const MatchingStepDetail: React.FC = () => {
             </Radio>
             <Radio value={3} className={styles.allDataRadio} onClick={handleAllDataRadioClick} aria-label="allDataRadio">
               <span>Test All Data</span>
-              <span aria-label={"allDataTooltip"}><Tooltip title={MatchingStepTooltips.testAllData} placement={"right"}>
-                <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
-              </Tooltip></span>
+              <span aria-label={"allDataTooltip"}>
+                <HCTooltip text={MatchingStepTooltips.testAllData} id="test-all-data-tooltip" placement="right">
+                  <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle}/>
+                </HCTooltip>
+              </span>
               <div aria-label="allDataContent"><br />
                   Select All Data in your source query in order to preview matching activity against all URIs up to 100 displayed pair matches. It is best practice to test with a smaller-sized source query.
               </div>

@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from "react";
 import {ModelingContext} from "../../../../util/modeling-context";
-import {Modal, Input, Select, Icon, Card, Button, Tooltip} from "antd";
+import {Modal, Input, Select, Card, Button, Tooltip} from "antd";
 import styles from "./add-edit-relationship.module.scss";
 // import graphConfig from "../../../../config/graph-vis.config";
 import oneToManyIcon from "../../../../assets/one-to-many.svg";
@@ -13,6 +13,9 @@ import {
   PropertyType,
   EntityModified
 } from "../../../../types/modeling-types";
+import HCTooltip from "../../../common/hc-tooltip/hc-tooltip";
+import { QuestionCircleFill } from "react-bootstrap-icons";
+import {faExclamationCircle} from "@fortawesome/free-solid-svg-icons";
 
 type Props = {
   openRelationshipModal: boolean;
@@ -37,7 +40,7 @@ const AddEditRelationship: React.FC<Props> = (props) => {
   const [joinPropertyValue, setJoinPropertyValue] = useState("");  //set default value when editing
   const [submitClicked, setSubmitClicked] = useState(false);
   const [oneToManySelected, setOneToManySelected] = useState(false); //set default value when editing
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("123123123123213");
   const [targetNodeJoinProperties, setTargetNodeJoinProperties] = useState<any[]>([]);
   const [defaultCardinality, setDefaultCardinality] = useState(false);
   const {modelingOptions, updateEntityModified} = useContext(ModelingContext);
@@ -286,7 +289,7 @@ const AddEditRelationship: React.FC<Props> = (props) => {
 
   const onCancel = () => {
     if (!loading) {
-      setErrorMessage("");
+      setErrorMessage("34534534534");
       props.toggleRelationshipModal(true);
       props.setOpenRelationshipModal(false);
       setSubmitClicked(false);
@@ -329,7 +332,7 @@ const AddEditRelationship: React.FC<Props> = (props) => {
           updateEntityModified(entityModified);
           props.updateSavedEntity([entityModified]);
         }
-        setErrorMessage("");
+        setErrorMessage("123213213213213123");
         setSubmitClicked(false);
       }
     }
@@ -351,7 +354,7 @@ const AddEditRelationship: React.FC<Props> = (props) => {
       } else if (!NAME_REGEX.test(event.target.value)) {
         setErrorMessage(ModelingTooltips.nameRegex);
       } else {
-        setErrorMessage("");
+        setErrorMessage("aasasasasasasasasas");
       }
     }
   };
@@ -381,11 +384,11 @@ const AddEditRelationship: React.FC<Props> = (props) => {
 
   const modalFooter = <div className={styles.modalFooter}>
     <div className={styles.deleteTooltip}>
-      <Tooltip title={ModelingTooltips.deleteRelationshipIcon} placement="top">
+      <HCTooltip text={ModelingTooltips.deleteRelationshipIcon} id="delete-relationship-tooltip" placement="top">
         <i key="last" role="delete-entity button" data-testid={"delete-relationship"}>
           <FontAwesomeIcon icon={faTrashAlt} className={styles.deleteIcon} size="lg" />
         </i>
-      </Tooltip>
+      </HCTooltip>
     </div>
     <Button
       aria-label="relationship-modal-cancel"
@@ -439,22 +442,25 @@ const AddEditRelationship: React.FC<Props> = (props) => {
             aria-label="relationship-textarea"
             style={errorMessage && submitClicked? {border: "solid 1px #C00"} : {}}
           />
-          {errorMessage && submitClicked? <Tooltip title={errorMessage} placement={"bottom"}><Icon aria-label="error-circle" type="exclamation-circle" theme="filled" className={styles.errorIcon}/></Tooltip> : ""}
-          <Tooltip title={ModelingTooltips.relationshipNameInfo(props.relationshipInfo.sourceNodeName)} placement={"bottom"}>
-            <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
-          </Tooltip>
+          {errorMessage && submitClicked? 
+            <HCTooltip text={errorMessage} id="exclamation-tooltip" placement={"bottom-end"}>
+              <i><FontAwesomeIcon icon={faExclamationCircle} size="1x" className={styles.errorIcon}/></i>
+            </HCTooltip> : ""}
+          <HCTooltip text={ModelingTooltips.relationshipNameInfo(props.relationshipInfo.sourceNodeName)} id="relationship-name-tooltip" placement="bottom">
+            <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle}/>
+          </HCTooltip>
         </div>
         <hr className={styles.horizontalLine}></hr>
-        <Tooltip title={ModelingTooltips.cardinalityButton} placement={"bottom"}>
+        <Tooltip title="{ModelingTooltips.cardinalityButton}" placement={"bottom"}>
           <Button className={styles.cardinalityButton} data-testid="cardinalityButton" onClick={() => toggleCardinality()}>
             {oneToManySelected ? <img data-testid="oneToManyIcon" className={styles.oneToManyIcon} src={oneToManyIcon} alt={""} onClick={() => toggleCardinality()}/> : <img data-testid="oneToOneIcon" className={styles.oneToOneIcon} src={oneToOneIcon} alt={""} onClick={() => toggleCardinality()}/>}
           </Button>
         </Tooltip>
         <div className={styles.joinPropertyDropdownContainer}>
           {joinPropertyDropdown}
-          <Tooltip title={ModelingTooltips.joinPropertyInfo} placement={"bottom"}>
-            <Icon type="question-circle" className={styles.questionCircle} theme="filled"/>
-          </Tooltip>
+          <HCTooltip text={ModelingTooltips.joinPropertyInfo} id="join-property-tooltip" placement={"bottom"}>
+            <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle}/>
+          </HCTooltip>
         </div>
         <div className={styles.nodeDisplay}>
           <span className={styles.nodeLabel}>TARGET</span>

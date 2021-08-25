@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from "react";
-import {Modal, Form, Input, Icon, Switch, Button, Select, Tooltip} from "antd";
+import {Modal, Form, Input, Icon, Switch, Button, Select} from "antd";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faLayerGroup} from "@fortawesome/free-solid-svg-icons";
 import styles from "./ruleset-single-modal.module.scss";
@@ -14,6 +14,8 @@ import {MatchingStep, MatchRule, MatchRuleset} from "../../../../types/curation-
 import {Definition} from "../../../../types/modeling-types";
 import {MatchingStepTooltips} from "../../../../config/tooltips.config";
 import {updateMatchingArtifact} from "../../../../api/matching";
+import HCTooltip from "../../../common/hc-tooltip/hc-tooltip";
+import { QuestionCircleFill } from "react-bootstrap-icons";
 
 type Props = {
   editRuleset: any;
@@ -534,9 +536,9 @@ const MatchRulesetModal: React.FC<Props> = (props) => {
           onChange={handleInputChange}
           onBlur={handleInputChange}
         />
-        <Tooltip title={MatchingStepTooltips.thesaurusUri}>
-          <Icon type="question-circle" className={styles.icon} theme="filled" />
-        </Tooltip>
+        <HCTooltip text={MatchingStepTooltips.thesaurusUri} id="thesaurus-uri-tooltip" placement="top">
+          <QuestionCircleFill color="#7F86B5" className={styles.icon} size={13} />
+        </HCTooltip>
       </Form.Item>
       <Form.Item
         className={styles.formItem}
@@ -553,9 +555,9 @@ const MatchRulesetModal: React.FC<Props> = (props) => {
           onChange={handleInputChange}
           onBlur={handleInputChange}
         />
-        <Tooltip title={MatchingStepTooltips.filter}>
-          <Icon type="question-circle" className={styles.icon} theme="filled" />
-        </Tooltip>
+        <HCTooltip text={MatchingStepTooltips.filter} id="filter-tooltip" placement="top">
+          <QuestionCircleFill color="#7F86B5" className={styles.icon} size={13} />
+        </HCTooltip>
       </Form.Item>
     </>
   );
@@ -582,9 +584,9 @@ const MatchRulesetModal: React.FC<Props> = (props) => {
           onChange={handleInputChange}
           onBlur={handleInputChange}
         />
-        <Tooltip title={MatchingStepTooltips.dictionaryUri}>
-          <Icon type="question-circle" className={styles.icon} theme="filled" />
-        </Tooltip>
+        <HCTooltip text={MatchingStepTooltips.dictionaryUri} id="dictionary-uri-tooltip" placement="top">
+          <QuestionCircleFill color="#7F86B5" className={styles.icon} size={13} />
+        </HCTooltip>
       </Form.Item>
       <Form.Item
         className={styles.formItem}
@@ -606,9 +608,9 @@ const MatchRulesetModal: React.FC<Props> = (props) => {
           onChange={handleInputChange}
           onBlur={handleInputChange}
         />
-        <Tooltip title={MatchingStepTooltips.distanceThreshold}>
-          <Icon type="question-circle" className={styles.icon} theme="filled" />
-        </Tooltip>
+        <HCTooltip text={MatchingStepTooltips.distanceThreshold} id="distance-threshold-tooltip" placement="top">
+          <QuestionCircleFill color="#7F86B5" className={styles.icon} size={13} />
+        </HCTooltip>
       </Form.Item>
     </>
   );
@@ -635,9 +637,9 @@ const MatchRulesetModal: React.FC<Props> = (props) => {
           onChange={handleInputChange}
           onBlur={handleInputChange}
         />
-        <Tooltip title={MatchingStepTooltips.uri}>
-          <Icon type="question-circle" className={styles.icon} theme="filled" />
-        </Tooltip>
+        <HCTooltip text={MatchingStepTooltips.uri} id="uri-tooltip" placement="top">
+          <QuestionCircleFill color="#7F86B5" className={styles.icon} size={13} />
+        </HCTooltip>
       </Form.Item>
       <Form.Item
         className={styles.formItem}
@@ -659,9 +661,9 @@ const MatchRulesetModal: React.FC<Props> = (props) => {
           onChange={handleInputChange}
           onBlur={handleInputChange}
         />
-        <Tooltip title={MatchingStepTooltips.function}>
-          <Icon type="question-circle" className={styles.icon} theme="filled" />
-        </Tooltip>
+        <HCTooltip text={MatchingStepTooltips.function} id="function-tooltip" placement="top">
+          <QuestionCircleFill color="#7F86B5" className={styles.icon} size={13} />
+        </HCTooltip>
       </Form.Item>
       <Form.Item
         className={styles.formItem}
@@ -678,9 +680,9 @@ const MatchRulesetModal: React.FC<Props> = (props) => {
           onChange={handleInputChange}
           onBlur={handleInputChange}
         />
-        <Tooltip title={MatchingStepTooltips.namespace}>
-          <Icon type="question-circle" className={styles.icon} theme="filled" />
-        </Tooltip>
+        <HCTooltip text={MatchingStepTooltips.namespace} id="namespace-tooltip" placement="top">
+          <QuestionCircleFill color="#7F86B5" className={styles.icon} size={13} />
+        </HCTooltip>
       </Form.Item>
     </>
   );
@@ -737,9 +739,9 @@ const MatchRulesetModal: React.FC<Props> = (props) => {
         <Form.Item>
           <span className={styles.reduceWeightText}>Reduce Weight</span>
           <Switch className={styles.reduceToggle} onChange={onToggleReduce} defaultChecked={props.editRuleset.reduce} aria-label="reduceToggle"></Switch>
-          <Tooltip title={<span aria-label="reduce-tooltip-text">{MatchingStepTooltips.reduceToggle}</span>} placement="right">
-            <Icon type="question-circle" className={styles.icon} theme="filled" />
-          </Tooltip>
+          <HCTooltip text={<span aria-label="reduce-tooltip-text">{MatchingStepTooltips.reduceToggle}</span>} id="reduce-tooltip" placement="top">
+            <QuestionCircleFill color="#7F86B5" className={styles.icon} size={13} />
+          </HCTooltip>
         </Form.Item>
         <Form.Item
           className={styles.formItem}

@@ -2,7 +2,7 @@ import React, {useState, useEffect, useContext} from "react";
 import {Link, useLocation, useHistory} from "react-router-dom";
 import styles from "./load-list.module.scss";
 import "./load-list.scss";
-import {Table, Icon, Modal, Menu, Select, Row, Col, Divider, Dropdown, Button, Tooltip} from "antd";
+import {Table, Icon, Modal, Menu, Select, Row, Col, Divider, Dropdown, Button} from "antd";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrashAlt} from "@fortawesome/free-regular-svg-icons";
 import moment from "moment";
@@ -11,6 +11,8 @@ import Steps from "../steps/steps";
 import {AdvLoadTooltips, SecurityTooltips} from "../../config/tooltips.config";
 import {LoadingContext} from "../../util/loading-context";
 import {getViewSettings, setViewSettings} from "../../util/user-context";
+import HCTooltip from "../common/hc-tooltip/hc-tooltip";
+import { PlayCircleFill } from "react-bootstrap-icons";
 
 const {Option} = Select;
 
@@ -421,14 +423,42 @@ const LoadList: React.FC<Props> = (props) => {
       key: "actions",
       render: (text, row) => (
         <span>
-          {props.canReadWrite ? <Tooltip title={"Run"} placement="bottom"><i aria-label="icon: run"><Icon type="play-circle" theme="filled" className={styles.runIcon} data-testid={row.name + "-run"} onClick={() => handleStepRun(row.name)} /></i></Tooltip> : <Tooltip title={"Run: " + SecurityTooltips.missingPermission} placement="bottom" overlayStyle={{maxWidth: "200px"}}><i role="disabled-run-load-list button" data-testid={row.name + "-disabled-run"}><Icon type="play-circle" theme="filled" onClick={(event) => event.preventDefault()} className={styles.disabledRunIcon} /></i></Tooltip>}
+          {props.canReadWrite ? 
+            <HCTooltip text="Run" id="run-action-tooltip" placement="bottom">
+              <i aria-label="icon: run">
+                <PlayCircleFill size={27} className={styles.runIcon} data-testid={row.name + "-run"} onClick={() => handleStepRun(row.name)}/>
+              </i>
+            </HCTooltip> : 
+            <HCTooltip text={"Run: " + SecurityTooltips.missingPermission} id="disabled-run-action-tooltip" placement="bottom">
+              <i role="disabled-run-load-list button" data-testid={row.name + "-disabled-run"}>
+                <PlayCircleFill size={27} onClick={(event) => event.preventDefault()} className={styles.disabledRunIcon}/>
+              </i>
+            </HCTooltip>
+          }
           <Dropdown data-testid={`${row.name}-dropdown`} overlay={menu(row.name)} trigger={["click"]} disabled={!props.canWriteFlow} placement="bottomCenter">
-            {props.canWriteFlow ? <Tooltip title={"Add to Flow"} placement="bottom"><span className={"AddToFlowIcon"} aria-label={row.name + "-add-icon"}></span></Tooltip> : <Tooltip title={"Add to Flow: " + SecurityTooltips.missingPermission} placement="bottom" overlayStyle={{maxWidth: "225px"}}><span aria-label={row.name + "-disabled-add-icon"} className={"disabledAddToFlowIcon"}></span></Tooltip>}
+            {props.canWriteFlow ? 
+              <HCTooltip text="Add to Flow" id="add-flow-tooltip" placement="bottom">
+                <span className={"AddToFlowIcon"} aria-label={row.name + "-add-icon"}></span>
+              </HCTooltip> : 
+              <HCTooltip text={"Add to Flow: " + SecurityTooltips.missingPermission} id="disabled-add-flow-tooltip" placement="bottom">
+                <span aria-label={row.name + "-disabled-add-icon"} className={"disabledAddToFlowIcon"}></span>
+              </HCTooltip>
+            }
           </Dropdown>
           {/* <Tooltip title={'Settings'} placement="bottom"><Icon type="setting" data-testid={row.name+'-settings'} onClick={() => OpenLoadSettingsDialog(row)} className={styles.settingsIcon} /></Tooltip> */}
                     &nbsp;
-          {props.canReadWrite ? <Tooltip title={"Delete"} placement="bottom"><i aria-label="icon: delete"><FontAwesomeIcon icon={faTrashAlt} data-testid={row.name + "-delete"} onClick={() => { showDeleteConfirm(row.name); }} className={styles.deleteIcon} size="lg" /></i></Tooltip> :
-            <Tooltip title={"Delete: " + SecurityTooltips.missingPermission} placement="bottom" overlayStyle={{maxWidth: "200px"}}><i aria-label="icon: delete"><FontAwesomeIcon icon={faTrashAlt} data-testid={row.name + "-disabled-delete"} onClick={(event) => event.preventDefault()} className={styles.disabledDeleteIcon} size="lg" /></i></Tooltip>}
+          {props.canReadWrite ? 
+            <HCTooltip text="Delete" id="delete-action-tooltip" placement="bottom">
+              <i aria-label="icon: delete">
+                <FontAwesomeIcon icon={faTrashAlt} data-testid={row.name + "-delete333"} onClick={() => { showDeleteConfirm(row.name); }} className={styles.deleteIcon} size="lg" />
+              </i>
+            </HCTooltip> :
+            <HCTooltip text={"Delete: " + SecurityTooltips.missingPermission} id="disabled-delete-action-tooltip" placement="bottom">
+              <i aria-label="icon: delete">
+                <FontAwesomeIcon icon={faTrashAlt} data-testid={row.name + "-disabled-delete"} onClick={(event) => event.preventDefault()} className={styles.disabledDeleteIcon} size="lg" />
+              </i>
+            </HCTooltip>
+          }
         </span>
       ),
 

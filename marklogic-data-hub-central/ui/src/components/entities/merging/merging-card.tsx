@@ -15,6 +15,7 @@ import {ConfirmationType} from "../../../types/common-types";
 import {MergingStep, StepType} from "../../../types/curation-types";
 import Steps from "../../steps/steps";
 import {getViewSettings, setViewSettings} from "../../../util/user-context";
+import HCTooltip from "../../common/hc-tooltip/hc-tooltip";
 interface Props {
   mergingStepsArray: any;
   flows: any;
@@ -272,7 +273,7 @@ const MergingCard: React.FC<Props> = (props) => {
                 stepToAdd: mergingArtifactName,
                 stepDefinitionType: "merging",
                 existingFlow: false
-              }}}><div className={styles.stepLink} data-testid={`${mergingArtifactName}-run-toNewFlow`}><Icon type="plus-circle" className={styles.plusIconNewFlow} theme="filled"/>New flow</div></Link>
+              }}}><div className={styles.stepLink} data-testid={`${mergingArtifactName}-run-toNewFlow`}><Icon type="plus-circle" className={styles.plusIconNewFlow} theme="filled"/>New flow 444</div></Link>
         </Col>
       </Row>
     </Modal>
@@ -427,22 +428,22 @@ const MergingCard: React.FC<Props> = (props) => {
                     }
                     <div className={styles.cardNonLink} data-testid={`${step.name}-toExistingFlow`}>
                     Add step to an existing flow
-                      {selectVisible ? (
-                        <Tooltip title={"Curate: "+SecurityTooltips.missingPermission} placement={"bottom"} visible={tooltipVisible && !props.canWriteMatchMerge}><div className={styles.cardLinkSelect}>
-                          <Select
-                            style={{width: "100%"}}
-                            value={selected[step.name] ? selected[step.name] : undefined}
-                            onChange={(flowName) => handleSelect({flowName: flowName, mergingName: step.name})}
-                            placeholder="Select Flow"
-                            defaultActiveFirstOption={false}
-                            disabled={!props.canWriteMatchMerge}
-                            data-testid={`${step.name}-flowsList`}
-                          >
-                            {props.flows && props.flows.length > 0 ? props.flows.map((f, i) => (
-                              <Option aria-label={`${f.name}-option`} value={f.name} key={i}>{f.name}</Option>
-                            )) : null}
-                          </Select>
-                        </div></Tooltip>
+                    {selectVisible ? (
+                      <HCTooltip text={"Curate: "+SecurityTooltips.missingPermission} id="add-merging-step-to-flow-tooltip" placement="bottom" show={tooltipVisible && !props.canWriteMatchMerge}><div className={styles.cardLinkSelect}>
+                        <Select
+                          style={{width: "100%"}}
+                          value={selected[step.name] ? selected[step.name] : undefined}
+                          onChange={(flowName) => handleSelect({flowName: flowName, mergingName: step.name})}
+                          placeholder="Select Flow"
+                          defaultActiveFirstOption={false}
+                          disabled={!props.canWriteMatchMerge}
+                          data-testid={`${step.name}-flowsList`}
+                        >
+                          {props.flows && props.flows.length > 0 ? props.flows.map((f, i) => (
+                            <Option aria-label={`${f.name}-option`} value={f.name} key={i}>{f.name}</Option>
+                          )) : null}
+                        </Select>
+                        </div></HCTooltip>
                       ): null}
                     </div>
                   </div>
