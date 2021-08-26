@@ -127,7 +127,7 @@ describe("Mapping", () => {
     mappingStepDetail.testMap().click();
     mappingStepDetail.validateMapValue("Person", "id", "444-44-4440");
     mappingStepDetail.validateMapValueString("Relation (relatedTo Person)", "relatedTo", "444-44-4440");
-    mappingStepDetail.getURIValue("Relation (relatedTo Person)").trigger("mouseover");
+    mappingStepDetail.getURIValue("Relation (relatedTo Person)").scrollIntoView().trigger("mouseover");
     cy.contains("/Relation/444-44-4440.json");
     // Search by name for non structured property
     mappingStepDetail.searchIcon().click();
