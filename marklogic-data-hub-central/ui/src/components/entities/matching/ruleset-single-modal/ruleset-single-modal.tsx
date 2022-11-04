@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from "react";
 import {Row, Col, Modal, Form, FormLabel, FormCheck} from "react-bootstrap";
-import Select, {components as SelectComponents} from "react-select";
+import Select, {components as SelectComponents, components, /*OptionProps*/} from "react-select";
 import reactSelectThemeConfig from "@config/react-select-theme.config";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faLayerGroup, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
@@ -19,6 +19,9 @@ import DeleteModal from "../delete-modal/delete-modal";
 import {QuestionCircleFill} from "react-bootstrap-icons";
 import {ConfirmYesNo, HCInput, HCButton, HCTooltip, HCModal} from "@components/common";
 import {themeColors} from "@config/themes.config";
+
+import {faFileExport, faPencilAlt} from "@fortawesome/free-solid-svg-icons";
+import ListModal from "../list-modal/list-modal";
 
 type Props = {
   editRuleset: any;
@@ -80,6 +83,10 @@ const MatchRulesetModal: React.FC<Props> = (props) => {
   const [isNamespaceTouched, setIsNamespaceTouched] = useState(false);
   const [discardChangesVisible, setDiscardChangesVisible] = useState(false);
   const [reduceValue, setReduceValue] = useState(false);
+
+  // const [renderFirstElement, setRenderFirstElement] = useState(true);
+  const [showListModal, setShowListModal] = useState(false);
+  const [actionListModal, setActionListModal] = useState("C");
 
   let curationRuleset = props.editRuleset;
   if (props.editRuleset.hasOwnProperty("index")) {
@@ -736,11 +743,63 @@ const MatchRulesetModal: React.FC<Props> = (props) => {
     resetModal();
   };
 
-  const MenuList  = (selector, props) => (
+  const MenuList = (selector, props) => (
     <div id={`${selector}-select-MenuList`}>
       <SelectComponents.MenuList {...props} />
     </div>
   );
+
+  { /* ==================================== begin  part spike ==================================== */ }
+  const handleClick = (event, btn) => {
+    setShowListModal(true);
+    if (btn === "A") {
+      setActionListModal("A");
+    } else if (btn === "C") {
+      setActionListModal("C");
+    } else if (btn === "E") {
+      setActionListModal("E");
+    } else if (btn === "D") {
+      setActionListModal("D");
+    }
+    event.stopPropagation();
+  };
+
+  const Option = (renderMatchOptions) => {
+    //How this works> https://react-select.com/components
+    //Create a copy of the renderMatchOptions and add a object to use as default "create new list"
+    //In this case is in use a "real" value called "Exact" and is not shown as an option
+    //Another option is trying to add a "GroupHeading" or similar, read the documentation
+    //For now this is a successful way
+    //console.log("renderMatchOptions ---> ", renderMatchOptions);
+    return (
+      <div>
+        {/* <components.GroupHeading {...renderMatchOptions}  /> */}
+        {/* {renderFirstElement && <components.MenuList {...renderMatchOptions} >
+          <div style={{backgroundColor: "yellow"}}>Custom Menu List</div>
+          {props.children}
+        </components.MenuList>} */}
+        {/* {setRenderFirstElement(false)} */}
+        {renderMatchOptions.data.label === "Exact" && <components.MenuList {...renderMatchOptions} >
+          <div style={{backgroundColor: "yellow"}} onClick={(event) => { handleClick(event, "A"); }}>Custom Menu List</div>
+          {/* {props.children} */}
+        </components.MenuList>}
+
+        {renderMatchOptions.data.label !== "Exact" && <components.Option {...renderMatchOptions} >
+          {/* {!renderFirstElement && <div style={{backgroundColor: "red"}}>Create new list</div>} */}
+          {/* <input type="checkbox" id="" name="" value="" />&nbsp; */}
+          {renderMatchOptions.data.label}
+          <div style={{float: "right"}}>
+            <FontAwesomeIcon style={{marginLeft: 5}} icon={faPencilAlt} color={themeColors.info} size="lg" onClick={(event) => { handleClick(event, "E"); }} />
+            <FontAwesomeIcon style={{marginLeft: 5}} icon={faFileExport} color={themeColors.info} size="lg" onClick={(event) => { handleClick(event, "C"); }} />
+            <FontAwesomeIcon style={{marginLeft: 5}} icon={faTrashAlt} color={themeColors.info} size="lg" onClick={(event) => { handleClick(event, "D"); }} />
+          </div>
+        </components.Option>
+        }
+      </div>
+    );
+  };
+
+  { /* ===================================== end part spike ===================================== */ }
 
   return (
     <HCModal
@@ -837,6 +896,50 @@ const MatchRulesetModal: React.FC<Props> = (props) => {
               </Row>
             </Col>
           </Row>
+          {/* ==================================== begin part spike ==================================== */}
+
+          <Row className={"mb-3"}>
+            <FormLabel column lg={3}>{"Values to ignore:"}<span className={styles.asterisk}>*</span></FormLabel>
+            <Col>
+              <Row>
+                <Col className={matchTypeErrorMessage ? "d-flex has-error" : "d-flex"}>
+                  <div className={styles.input}>
+                    <Select
+                      id="test-spike"
+                      inputId="test-spike"
+                      aria-label="spike-list"
+                      isMulti
+                      closeMenuOnSelect={false}
+                      isClearable={true}
+                      isSearchable={true}
+                      components={{Option}}
+                      placeholder="Search previous lists"
+                      value={renderMatchOptions.find(oItem => oItem.value === matchType)}
+                      onChange={onMatchTypeSelect}
+                      options={renderMatchOptions}
+                      styles={reactSelectThemeConfig}
+                      formatOptionLabel={({value, label}) => {
+                        return (
+                          <span aria-label={`${value}-option`} style={{backgroundColor: "silver", width: "100%"}}>
+                            <div>
+                              {label}
+                            </div>
+                          </span>
+                        );
+                      }}
+                    />
+                  </div>
+                </Col>
+                <Col xs={12} className={styles.validationError}>
+                  {matchTypeErrorMessage}
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+
+          {/* ===================================== end spike ===================================== */}
+          {/* ===================================== end spike ===================================== */}
+          {/* ===================================== end spike ===================================== */}
 
           {matchType === "synonym" && renderSynonymOptions}
           {matchType === "doubleMetaphone" && renderDoubleMetaphoneOptions}
@@ -844,6 +947,14 @@ const MatchRulesetModal: React.FC<Props> = (props) => {
           {modalFooter}
         </Form>
         {discardChanges}
+        {/* ==================================== begin part spike ==================================== */}
+        <ListModal
+          isVisible={showListModal}
+          toggleModal={setShowListModal}
+          action={actionListModal}
+          confirmAction={confirmAction}
+        />
+        {/* ===================================== end part spike ===================================== */}
         <DeleteModal
           isVisible={showDeleteConfirmModal}
           toggleModal={toggleDeleteConfirmModal}
